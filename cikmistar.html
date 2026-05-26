@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Çıkmış Sorular — ÇÜTF Dönem 2</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--card:#1a1d27;--card2:#20243a;--border:#2a2d3a;--text:#e8eaf0;--muted:#8b8fa8;--accent:#4f8ef7;--green:#1D9E75;--orange:#EF9F27;--red:#e74c3c}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+nav{display:flex;gap:8px;padding:.875rem 1.25rem;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap}
+nav a{color:var(--muted);text-decoration:none;font-size:.82rem;padding:5px 10px;border-radius:7px;transition:.15s}
+nav a:hover,nav a.active{color:var(--text);background:var(--card2)}
+nav h1{font-size:.95rem;font-weight:700;margin-right:auto}
+.wrap{max-width:860px;margin:0 auto;padding:1.5rem}
+h2{font-size:1.1rem;font-weight:600;margin-bottom:1rem}
+
+/* FİLTRELER */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}
+select{padding:7px 12px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.82rem;cursor:pointer;flex:1;min-width:160px;max-width:280px}
+select:focus{outline:none;border-color:var(--accent)}
+.btn{padding:8px 16px;border-radius:9px;border:none;font-size:.82rem;font-weight:600;cursor:pointer;transition:.15s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{opacity:.85}
+.btn-outline{background:var(--card2);color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{background:var(--border)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{opacity:.85}
+
+/* İSTATİSTİK */
+.stats-row{display:flex;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap}
+.stat-pill{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:6px 14px;font-size:.78rem}
+.stat-pill span{font-weight:700;margin-right:4px}
+
+/* PROGRESS */
+.prog-wrap{background:var(--border);border-radius:20px;height:5px;margin-bottom:1.25rem}
+.prog-fill{height:5px;border-radius:20px;background:var(--green);transition:width .3s}
+
+/* SORU KARTI */
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+.q-meta{display:flex;gap:6px;margin-bottom:.75rem;flex-wrap:wrap}
+.badge{font-size:.7rem;padding:2px 9px;border-radius:20px;font-weight:600;background:rgba(79,142,247,.12);color:var(--accent)}
+.badge-sinav{background:rgba(239,159,39,.1);color:var(--orange)}
+.q-text{font-size:.95rem;font-weight:500;line-height:1.65;margin-bottom:1rem;white-space:pre-line}
+.opts{display:flex;flex-direction:column;gap:7px;margin-bottom:1rem}
+.opt{text-align:left;padding:10px 14px;border-radius:9px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:.87rem;cursor:pointer;transition:.15s;line-height:1.4;width:100%}
+.opt:hover:not(:disabled){border-color:var(--accent);background:rgba(79,142,247,.07)}
+.opt.correct{background:rgba(29,158,117,.15);border-color:var(--green);color:#a8f0d8;font-weight:500}
+.opt.wrong{background:rgba(231,76,60,.15);border-color:var(--red);color:#f5a49a}
+.opt:disabled{cursor:default}
+.aciklama{background:rgba(29,158,117,.07);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 14px;font-size:.83rem;line-height:1.7;color:var(--muted);display:none;margin-bottom:1rem}
+.aciklama.show{display:block}
+.aciklama strong{color:var(--green)}
+.q-nav{display:flex;gap:8px;flex-wrap:wrap}
+
+/* SKOR */
+.score-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2.5rem 1.5rem;text-align:center;display:none}
+.score-card.show{display:block}
+.score-big{font-size:3rem;font-weight:700;color:var(--green);margin-bottom:.3rem}
+.score-sub{color:var(--muted);margin-bottom:1.5rem}
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:320px;margin:0 auto 1.5rem}
+.sg{background:var(--card2);border-radius:10px;padding:10px;text-align:center}
+.sg-n{font-size:1.4rem;font-weight:700}
+.sg-l{font-size:.72rem;color:var(--muted);margin-top:2px}
+
+/* LOADING */
+.loading{text-align:center;padding:3rem;color:var(--muted)}
+.spinner{display:inline-block;width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:.75rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:480px){.wrap{padding:1rem}.q-card{padding:1rem}}
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>📚 ÇÜTF Dönem 2</h1>
+  <a href="index.html">Ana Sayfa</a>
+  <a href="cikmistar.html" class="active">Çıkmış Sorular</a>
+  <a href="index.html#pdfs">PDF'ler</a>
+</nav>
+
+<div class="wrap">
+  <h2>Çıkmış Sorular — Komite Sınavları</h2>
+
+  <div class="filters">
+    <select id="sinav-sel" onchange="filtrele()">
+      <option value="">Tüm sınavlar</option>
+    </select>
+    <button class="btn btn-primary" onclick="baslat()">▶ Başlat</button>
+    <button class="btn btn-outline" onclick="karistir()">🔀 Karıştır</button>
+  </div>
+
+  <div class="stats-row" id="stats-row" style="display:none">
+    <div class="stat-pill"><span id="st-toplam">0</span>soru</div>
+    <div class="stat-pill" style="color:var(--green)"><span id="st-dogru">0</span>✓ doğru</div>
+    <div class="stat-pill" style="color:var(--red)"><span id="st-yanlis">0</span>✗ yanlış</div>
+    <div class="stat-pill"><span id="st-kalan">0</span>kalan</div>
+  </div>
+  <div class="prog-wrap" id="prog-wrap" style="display:none">
+    <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <div>Sorular yükleniyor...</div>
+  </div>
+
+  <div id="q-area" style="display:none"></div>
+  <div class="score-card" id="score-card">
+    <div class="score-big" id="sc-skor"></div>
+    <div class="score-sub" id="sc-msg"></div>
+    <div class="score-grid">
+      <div class="sg"><div class="sg-n" id="sc-d" style="color:var(--green)">0</div><div class="sg-l">Doğru</div></div>
+      <div class="sg"><div class="sg-n" id="sc-y" style="color:var(--red)">0</div><div class="sg-l">Yanlış</div></div>
+      <div class="sg"><div class="sg-n" id="sc-p" style="color:var(--orange)">0%</div><div class="sg-l">Başarı</div></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-green" onclick="tekrar()">Tekrar başla</button>
+      <button class="btn btn-outline" onclick="karistir()">Farklı sorular</button>
+    </div>
+  </div>
+</div>
+
+<script src="anki_data.js"></script>
+<script>
+let liste = [];
+let idx = 0;
+let dogru = 0;
+let yanlis = 0;
+let cevaplandi = false;
+
+// Sınav seçeneklerini doldur
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('loading').style.display = 'none';
+  
+  if(typeof SINAVLAR === 'undefined') {
+    document.getElementById('loading').innerHTML = '<p style="color:var(--red)">anki_data.js yüklenemedi. Dosyayı repoya yüklediğinden emin ol.</p>';
+    document.getElementById('loading').style.display = 'block';
+    return;
+  }
+
+  const sel = document.getElementById('sinav-sel');
+  SINAVLAR.forEach(s => {
+    const o = document.createElement('option');
+    o.value = s;
+    o.textContent = s;
+    sel.appendChild(o);
+  });
+
+  baslat();
+});
+
+function filtrele() {
+  // Seçim değişince otomatik başlatma
+}
+
+function getListe() {
+  const secilenSinav = document.getElementById('sinav-sel').value;
+  if(secilenSinav) {
+    return ANKI.filter(c => c.s === secilenSinav);
+  }
+  return [...ANKI];
+}
+
+function baslat() {
+  liste = getListe();
+  idx = 0; dogru = 0; yanlis = 0; cevaplandi = false;
+  document.getElementById('score-card').classList.remove('show');
+  document.getElementById('stats-row').style.display = 'flex';
+  document.getElementById('prog-wrap').style.display = 'block';
+  document.getElementById('q-area').style.display = 'block';
+  updateStats();
+  renderQ();
+}
+
+function karistir() {
+  liste = getListe().sort(() => Math.random() - .5);
+  idx = 0; dogru = 0; yanlis = 0; cevaplandi = false;
+  document.getElementById('score-card').classList.remove('show');
+  document.getElementById('stats-row').style.display = 'flex';
+  document.getElementById('prog-wrap').style.display = 'block';
+  document.getElementById('q-area').style.display = 'block';
+  updateStats();
+  renderQ();
+}
+
+function tekrar() {
+  idx = 0; dogru = 0; yanlis = 0; cevaplandi = false;
+  document.getElementById('score-card').classList.remove('show');
+  document.getElementById('q-area').style.display = 'block';
+  updateStats();
+  renderQ();
+}
+
+function updateStats() {
+  document.getElementById('st-toplam').textContent = liste.length + ' ';
+  document.getElementById('st-dogru').textContent = dogru + ' ';
+  document.getElementById('st-yanlis').textContent = yanlis + ' ';
+  document.getElementById('st-kalan').textContent = Math.max(0, liste.length - idx) + ' ';
+  const pct = liste.length > 0 ? (idx / liste.length) * 100 : 0;
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+function renderQ() {
+  if(idx >= liste.length) { showScore(); return; }
+  const q = liste[idx];
+  cevaplandi = false;
+
+  document.getElementById('q-area').innerHTML = `
+    <div class="q-card">
+      <div class="q-meta">
+        <span class="badge">${idx + 1} / ${liste.length}</span>
+        <span class="badge badge-sinav">${q.s}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="opts" id="opts">
+        ${q.o.map((o,i) => `<button class="opt" onclick="sec(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="aciklama" id="acik"><strong>Açıklama:</strong> ${q.a}</div>
+      <div class="q-nav" id="q-nav" style="display:none">
+        <button class="btn btn-green" onclick="sonraki()">${idx < liste.length - 1 ? 'Sonraki →' : 'Sonuçları gör →'}</button>
+        <button class="btn btn-outline" onclick="atlaDizini()">Atla</button>
+      </div>
+    </div>`;
+}
+
+function sec(i) {
+  if(cevaplandi) return;
+  cevaplandi = true;
+  const q = liste[idx];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  if(i === q.d) { dogru++; btns[i].classList.add('correct'); }
+  else { yanlis++; btns[i].classList.add('wrong'); btns[q.d].classList.add('correct'); }
+  document.getElementById('acik').classList.add('show');
+  document.getElementById('q-nav').style.display = 'flex';
+  updateStats();
+}
+
+function sonraki() {
+  idx++;
+  updateStats();
+  if(idx >= liste.length) { showScore(); return; }
+  renderQ();
+}
+
+function atlaDizini() {
+  idx++;
+  updateStats();
+  if(idx >= liste.length) { showScore(); return; }
+  renderQ();
+}
+
+function showScore() {
+  document.getElementById('q-area').style.display = 'none';
+  const sc = document.getElementById('score-card');
+  sc.classList.add('show');
+  const t = dogru + yanlis;
+  const pct = t > 0 ? Math.round(dogru / t * 100) : 0;
+  const msgs = ['Devam et 💪','İyi gidiyor! 📚','Güzel! 🎯','Neredeyse hazırsın 🔥','Mükemmel! 🏆'];
+  document.getElementById('sc-skor').textContent = `${dogru}/${t}`;
+  document.getElementById('sc-msg').textContent = msgs[Math.min(Math.floor(pct/20),4)];
+  document.getElementById('sc-d').textContent = dogru;
+  document.getElementById('sc-y').textContent = yanlis;
+  document.getElementById('sc-p').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = '100%';
+}
+</script>
+</body>
+</html>
