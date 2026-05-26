@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Final Çalışma — Soru Bankası</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--card:#1a1d27;--card2:#20243a;--border:#2a2d3a;
+  --text:#e8eaf0;--muted:#8b8fa8;--accent:#4f8ef7;
+  --green:#1D9E75;--orange:#EF9F27;--red:#e74c3c;--purple:#8e44ad;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+
+/* NAV */
+nav{display:flex;gap:6px;padding:1rem 1.5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center}
+nav h1{font-size:1rem;font-weight:700;margin-right:auto;color:var(--text)}
+.tab{padding:7px 14px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-size:0.82rem;cursor:pointer;transition:.15s}
+.tab.active{background:var(--card2);color:var(--text);font-weight:600}
+.tab:hover:not(.active){color:var(--text)}
+
+/* SECTIONS */
+.section{display:none;padding:1.5rem;max-width:900px;margin:0 auto}
+.section.active{display:block}
+
+/* HOME */
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.subj-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem;cursor:pointer;transition:.2s;text-align:left}
+.subj-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.subj-icon{font-size:1.6rem;margin-bottom:.6rem}
+.subj-name{font-weight:600;font-size:.95rem;margin-bottom:.3rem}
+.subj-meta{font-size:.75rem;color:var(--muted)}
+.subj-badges{display:flex;gap:5px;margin-top:.6rem;flex-wrap:wrap}
+.sbadge{font-size:.68rem;padding:2px 8px;border-radius:20px;font-weight:600}
+
+.info-box{background:rgba(79,142,247,0.07);border:1px solid rgba(79,142,247,0.2);border-radius:12px;padding:1rem 1.25rem;font-size:.83rem;line-height:1.7;color:var(--muted)}
+.info-box strong{color:var(--text)}
+
+/* QUIZ */
+.quiz-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;flex-wrap:wrap}
+.quiz-header h2{font-size:1.1rem;font-weight:600}
+.progress-bar{flex:1;height:6px;background:var(--border);border-radius:20px;min-width:80px}
+.progress-fill{height:6px;border-radius:20px;background:var(--green);transition:width .4s}
+.q-counter{font-size:.82rem;color:var(--muted);white-space:nowrap}
+
+.filter-row{display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
+.filter-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:.78rem;cursor:pointer;transition:.15s}
+.filter-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(79,142,247,0.08)}
+
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+.q-meta{display:flex;gap:8px;margin-bottom:.75rem;flex-wrap:wrap}
+.q-badge{font-size:.7rem;padding:2px 9px;border-radius:20px;font-weight:600}
+.q-text{font-size:.95rem;font-weight:500;line-height:1.6;margin-bottom:1.1rem;white-space:pre-line}
+
+.options{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
+.opt-btn{text-align:left;padding:10px 14px;border-radius:9px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:.87rem;cursor:pointer;transition:.15s;line-height:1.4}
+.opt-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(79,142,247,0.07)}
+.opt-btn.correct{background:rgba(29,158,117,0.15);border-color:var(--green);color:#a8f0d8;font-weight:500}
+.opt-btn.wrong{background:rgba(231,76,60,0.15);border-color:var(--red);color:#f5a49a}
+.opt-btn.reveal{background:rgba(29,158,117,0.12);border-color:var(--green);color:#a8f0d8}
+.opt-btn:disabled{cursor:default}
+
+.explanation{background:rgba(29,158,117,0.07);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 14px;font-size:.83rem;line-height:1.7;color:var(--muted);display:none;margin-bottom:1rem}
+.explanation.show{display:block}
+.explanation strong{color:var(--green)}
+
+.q-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:9px 18px;border-radius:9px;border:none;font-size:.83rem;font-weight:600;cursor:pointer;transition:.15s}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{opacity:.85}
+.btn-outline{background:var(--card2);color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{background:var(--border)}
+
+/* SCORE CARD */
+.score-card{text-align:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2.5rem 1.5rem;display:none}
+.score-card.show{display:block}
+.score-big{font-size:3.5rem;font-weight:700;color:var(--green);margin-bottom:.3rem}
+.score-sub{color:var(--muted);margin-bottom:1.5rem;font-size:.9rem}
+.score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;max-width:360px;margin:0 auto 1.5rem}
+.score-item{background:var(--card2);border-radius:10px;padding:12px;text-align:center}
+.score-item-n{font-size:1.4rem;font-weight:700}
+.score-item-l{font-size:.72rem;color:var(--muted);margin-top:2px}
+
+/* FLASHCARD */
+.fc-header{display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center}
+.fc-header h2{font-size:1.1rem;font-weight:600;margin-right:auto}
+.fc-wrapper{perspective:1200px;margin-bottom:1rem;cursor:pointer}
+.fc-inner{position:relative;min-height:240px;transition:transform .55s;transform-style:preserve-3d}
+.fc-wrapper.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-front,.fc-back{position:absolute;inset:0;backface-visibility:hidden;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;display:flex;flex-direction:column;justify-content:center}
+.fc-back{transform:rotateY(180deg);background:rgba(29,158,117,0.07);border-color:var(--green)}
+.fc-label{font-size:.72rem;color:var(--muted);margin-bottom:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.fc-text{font-size:1rem;line-height:1.65;font-weight:500}
+.fc-hint{font-size:.75rem;color:var(--muted);margin-top:auto;padding-top:1rem;text-align:center}
+.fc-nav{display:flex;gap:8px;justify-content:center;align-items:center}
+.fc-count{font-size:.82rem;color:var(--muted);padding:0 10px}
+.fc-subject-label{display:inline-block;font-size:.7rem;padding:2px 10px;border-radius:20px;font-weight:600;margin-bottom:.5rem}
+
+/* PDF SECTION */
+.pdf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.pdf-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem}
+.pdf-card h3{font-size:.95rem;font-weight:600;margin-bottom:.4rem}
+.pdf-card p{font-size:.78rem;color:var(--muted);margin-bottom:1rem;line-height:1.5}
+.pdf-btns{display:flex;gap:6px}
+.pdf-btns a{flex:1;padding:8px 0;border-radius:8px;font-size:.78rem;font-weight:600;text-align:center;text-decoration:none;transition:.15s}
+.pdf-btns a:hover{opacity:.82}
+
+@media(max-width:480px){
+  nav{padding:.75rem 1rem}
+  .section{padding:1rem}
+  .fc-front,.fc-back{padding:1.25rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>📚 Final Çalışma</h1>
+  <button class="tab active" onclick="showTab('home')">Ana Sayfa</button>
+  <button class="tab" onclick="showTab('quiz')">Soru Bankası</button>
+  <button class="tab" onclick="showTab('flash')">Flash Kartlar</button>
+  <button class="tab" onclick="showTab('pdfs')">PDF'ler</button>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="section active">
+  <div class="subject-grid">
+    <div class="subj-card" onclick="startQuiz('fiz')">
+      <div class="subj-icon">🫀</div>
+      <div class="subj-name">Fizyoloji</div>
+      <div class="subj-meta">~50 soru/sınav · 7 bölüm</div>
+      <div class="subj-badges">
+        <span class="sbadge" style="background:rgba(29,158,117,.15);color:var(--green)">~10 birebir</span>
+        <span class="sbadge" style="background:rgba(239,159,39,.15);color:var(--orange)">~15 benzer</span>
+      </div>
+    </div>
+    <div class="subj-card" onclick="startQuiz('ana')">
+      <div class="subj-icon">🧠</div>
+      <div class="subj-name">Anatomi</div>
+      <div class="subj-meta">~32 soru/sınav · 5 bölüm</div>
+      <div class="subj-badges">
+        <span class="sbadge" style="background:rgba(41,128,185,.15);color:#2980b9">~13 birebir</span>
+        <span class="sbadge" style="background:rgba(239,159,39,.15);color:var(--orange)">~5 benzer</span>
+      </div>
+    </div>
+    <div class="subj-card" onclick="startQuiz('far')">
+      <div class="subj-icon">💊</div>
+      <div class="subj-name">Farmakoloji</div>
+      <div class="subj-meta">~10 soru/sınav · en yüksek oran</div>
+      <div class="subj-badges">
+        <span class="sbadge" style="background:rgba(142,68,173,.15);color:var(--purple)">~5 birebir</span>
+        <span class="sbadge" style="background:rgba(239,159,39,.15);color:var(--orange)">~6 benzer</span>
+      </div>
+    </div>
+    <div class="subj-card" onclick="startQuiz('pat')">
+      <div class="subj-icon">🔬</div>
+      <div class="subj-name">Patoloji</div>
+      <div class="subj-meta">~8 soru/sınav · Q numaraları hizalı</div>
+      <div class="subj-badges">
+        <span class="sbadge" style="background:rgba(192,57,43,.15);color:var(--red)">~2 birebir</span>
+        <span class="sbadge" style="background:rgba(239,159,39,.15);color:var(--orange)">~3 benzer</span>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <strong>Nasıl çalışılır?</strong> Bir derse tıkla → soru bankasında o dersin sorularını çöz → yanlışlarını flash kartlarla tekrar et → PDF'i indir.<br/><br/>
+    <strong>Öncelik:</strong> Farmakoloji (1 gün) → Anatomi nöroanatomi → Fizyoloji GİS + KVS → Fizyoloji endokrin → Patoloji → Genel tekrar
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="section">
+  <div id="quiz-main">
+    <div class="quiz-header">
+      <h2 id="quiz-title">Soru Bankası</h2>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="q-counter" id="q-counter">0 / 0</div>
+    </div>
+    <div class="filter-row" id="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all')">Tümü</button>
+      <button class="filter-btn" onclick="setFilter('fiz')">🫀 Fizyoloji</button>
+      <button class="filter-btn" onclick="setFilter('ana')">🧠 Anatomi</button>
+      <button class="filter-btn" onclick="setFilter('far')">💊 Farmakoloji</button>
+      <button class="filter-btn" onclick="setFilter('pat')">🔬 Patoloji</button>
+    </div>
+    <div id="q-area"></div>
+    <div class="score-card" id="score-card">
+      <div class="score-big" id="sc-score"></div>
+      <div class="score-sub" id="sc-msg"></div>
+      <div class="score-grid">
+        <div class="score-item"><div class="score-item-n" id="sc-cor" style="color:var(--green)">0</div><div class="score-item-l">Doğru</div></div>
+        <div class="score-item"><div class="score-item-n" id="sc-wr" style="color:var(--red)">0</div><div class="score-item-l">Yanlış</div></div>
+        <div class="score-item"><div class="score-item-n" id="sc-pct" style="color:var(--orange)">0%</div><div class="score-item-l">Başarı</div></div>
+      </div>
+      <button class="btn btn-green" onclick="restartQuiz()" style="margin:0 auto;display:block">Tekrar başla</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLASHCARD -->
+<div id="flash" class="section">
+  <div class="fc-header">
+    <h2>Flash Kartlar</h2>
+    <div class="filter-row" style="margin:0">
+      <button class="filter-btn active" onclick="setFcFilter('all')">Tümü</button>
+      <button class="filter-btn" onclick="setFcFilter('fiz')">🫀</button>
+      <button class="filter-btn" onclick="setFcFilter('ana')">🧠</button>
+      <button class="filter-btn" onclick="setFcFilter('far')">💊</button>
+      <button class="filter-btn" onclick="setFcFilter('pat')">🔬</button>
+    </div>
+  </div>
+  <div class="fc-wrapper" id="fc-wrapper" onclick="flipCard()">
+    <div class="fc-inner" id="fc-inner">
+      <div class="fc-front">
+        <div><span class="fc-subject-label" id="fc-subj-label"></span></div>
+        <div class="fc-label">SORU</div>
+        <div class="fc-text" id="fc-q"></div>
+        <div class="fc-hint">👆 Cevap için tıkla</div>
+      </div>
+      <div class="fc-back">
+        <div class="fc-label">CEVAP & AÇIKLAMA</div>
+        <div class="fc-text" id="fc-a"></div>
+      </div>
+    </div>
+  </div>
+  <div class="fc-nav">
+    <button class="btn btn-outline" onclick="fcMove(-1)">← Geri</button>
+    <span class="fc-count" id="fc-count">1 / 1</span>
+    <button class="btn btn-outline" onclick="fcMove(1)">İleri →</button>
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:.78rem;margin-top:.75rem">Karta tıklayarak cevabı gör · Ok tuşları ile ilerle</p>
+</div>
+
+<!-- PDF -->
+<div id="pdfs" class="section">
+  <h2 style="margin-bottom:1rem;font-size:1.1rem">PDF Notları</h2>
+  <p style="color:var(--muted);font-size:.83rem;margin-bottom:1.25rem">Her PDF içinde konu anlatımı + soru bankası + hızlı tekrar tablosu bulunmaktadır.</p>
+  <div class="pdf-grid">
+    <div class="pdf-card">
+      <div style="font-size:1.4rem;margin-bottom:.5rem">🫀</div>
+      <h3>Fizyoloji</h3>
+      <p>7 bölüm · GİS, KVS, Nöro, Endokrin, Solunum, Böbrek, Üreme · 100+ soru</p>
+      <div class="pdf-btns">
+        <a href="pdfs/fizyoloji_detayli_konu_anlatimi.pdf" target="_blank" style="background:var(--green);color:#fff">Aç</a>
+        <a href="pdfs/fizyoloji_detayli_konu_anlatimi.pdf" download style="background:var(--card2);color:var(--text);border:1px solid var(--border)">İndir</a>
+      </div>
+    </div>
+    <div class="pdf-card">
+      <div style="font-size:1.4rem;margin-bottom:.5rem">🧠</div>
+      <h3>Anatomi</h3>
+      <p>5 bölüm · Nöroanatomi, Karın, Toraks, Baş-Boyun, Pelvis · 40+ soru</p>
+      <div class="pdf-btns">
+        <a href="pdfs/anatomi_detayli_konu_anlatimi.pdf" target="_blank" style="background:#2980b9;color:#fff">Aç</a>
+        <a href="pdfs/anatomi_detayli_konu_anlatimi.pdf" download style="background:var(--card2);color:var(--text);border:1px solid var(--border)">İndir</a>
+      </div>
+    </div>
+    <div class="pdf-card">
+      <div style="font-size:1.4rem;margin-bottom:.5rem">💊</div>
+      <h3>Farmakoloji</h3>
+      <p>5 bölüm · Antagonizma, Farmakokinetik, CYP450, Toksikoloji, Genetik · 30+ soru</p>
+      <div class="pdf-btns">
+        <a href="pdfs/farmakoloji_detayli_konu_anlatimi.pdf" target="_blank" style="background:var(--purple);color:#fff">Aç</a>
+        <a href="pdfs/farmakoloji_detayli_konu_anlatimi.pdf" download style="background:var(--card2);color:var(--text);border:1px solid var(--border)">İndir</a>
+      </div>
+    </div>
+    <div class="pdf-card">
+      <div style="font-size:1.4rem;margin-bottom:.5rem">🔬</div>
+      <h3>Patoloji</h3>
+      <p>5 bölüm · Hücre zedelenmesi, Apoptoz, İnflamasyon, Tromboz, İmmün · 25+ soru</p>
+      <div class="pdf-btns">
+        <a href="pdfs/patoloji_detayli_konu_anlatimi.pdf" target="_blank" style="background:var(--red);color:#fff">Aç</a>
+        <a href="pdfs/patoloji_detayli_konu_anlatimi.pdf" download style="background:var(--card2);color:var(--text);border:1px solid var(--border)">İndir</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── VERİ ───────────────────────────────────────────────
+const SORULAR = [
+  // FİZYOLOJİ ─────────────────────
+  {s:'fiz',yil:'3 yılda tekrar',konu:'GİS — Motilin',
+   soru:'Göç eden motor kompleksi (MMC) başlatan hormon hangisidir?',
+   opts:['A) Gastrin','B) Motilin','C) Sekretin','D) CCK','E) Enterogastron'],
+   d:1, acik:'Motilin ince bağırsak mukozasından salgılanır, aç karnına MMC Faz 3\'ü başlatır. Yemekle durur. 3 yılda tekrar etti — ezberle.'},
+  {s:'fiz',yil:'2 yılda birebir',konu:'GİS — Gastrin',
+   soru:'Uzun süreli antiasit kullanımı ile gastrik pH 7.0 civarında tutulursa salgılanan gastrin seviyesi nasıl değişir?',
+   opts:['A) Azalır','B) Artar','C) Önce azalır sonra artar','D) Artar sonra azalır','E) Değişmez'],
+   d:1, acik:'Normalde düşük pH gastrin salgısını baskılar. pH 7\'de bu baskılama kalkar → gastrin serbestçe salgılanır → ARTAR.'},
+  {s:'fiz',yil:'2 yılda birebir',konu:'GİS — Pankreas',
+   soru:'Pankreasın ekzokrin sekresyonu hakkında hangisi YANLIŞTIR?',
+   opts:['A) Sekretin duktal hücreleri uyarır → HCO3- salgılanır','B) CCK asiner hücrelerden enzim salgılatır','C) Vagotomi yemek sonrası enzim salgısını artırır','D) Sekretin + CCK birbirini potansiyelize eder','E) Gastrin enzim salgısını artırır'],
+   d:2, acik:'Vagotomi = vagus kesilir = asetilkolin yok = enzim AZALIR. "Artırır" demek her zaman yanlış. 2 yılda birebir çıktı.'},
+  {s:'fiz',yil:'2 yılda birebir',konu:'GİS — Fizyopatoloji',
+   soru:'Aşağıdaki fizyopatolojik süreçlerden hangisi YANLIŞTIR?',
+   opts:['A) Çölyak hastalığında jejunum villüsleri düzleşir','B) Gastrin salgılayan tümörler pankreasta bulunabilir','C) Steatoz için hem pankreatik hem safra salgısı yetersizliği gereklidir','D) Kolera toksini intestinal lümene aşırı Na+ ve su salgılatır','E) Megaloblastik anemi terminal ileumu etkileyen hastalıklarla ilişkili olabilir'],
+   d:2, acik:'İkisi birden şart değil. Sadece pankreas lipazı olmasa yeterli, steatoz oluşur. 2 yılda birebir çıktı.'},
+  {s:'fiz',yil:'2 yılda birebir',konu:'GİS — İştah',
+   soru:'İştah düzenlemesinde hangisi nöromediatör olarak etki göstermez?',
+   opts:['A) NPY','B) AgRP','C) POMC','D) CART','E) CCK'],
+   d:4, acik:'NPY, AgRP, POMC, CART hipotalamusta nöromediatör. CCK esas olarak periferik GİS hormonu. 2 yılda birebir çıktı.'},
+  {s:'fiz',yil:'2 yılda birebir',konu:'GİS — Mide Boşalma',
+   soru:'Midenin boşalma hızını etkilemeyen hangisidir?',
+   opts:['A) Gastrik içerikteki karbonhidratlar','B) Duodenuma yağ gelmesi','C) Duodenuma asit gelmesi','D) Yüksek osmolarite','E) CCK salgılanması'],
+   d:0, acik:'Yağ, protein, asit, yüksek osmolarite mide boşalmasını yavaşlatır. Karbonhidratın direkt etkisi yoktur. 2 yılda birebir çıktı.'},
+  {s:'fiz',yil:'3 yılda tekrar',konu:'Metabolizma — Hormona Duyarlı Lipaz',
+   soru:'Hormona duyarlı lipaz (HSL) üzerine etkisi diğerlerinden FARKLI olan hormon hangisidir?',
+   opts:['A) Epinefrin','B) Norepinefrin','C) İnsülin','D) Kortizol','E) Büyüme hormonu'],
+   d:2, acik:'Diğerleri HSL\'yi AKTİVE eder (lipoliz ↑). İnsülin tek istisna → HSL\'yi İNHİBE eder (lipoliz ↓). 3 yılda tekrar etti.'},
+  {s:'fiz',yil:'3 yılda tekrar',konu:'KVS — Sempatik & Kalp',
+   soru:'Sempatik sinir sisteminin kalp üzerindeki etkileriyle uyumlu OLMAYAN hangisidir?',
+   opts:['A) Sistol sırasında pik basınç artar','B) Sistol süresi kısalır','C) Ventriküler gevşeme hızı artar','D) Atım hacmi artar','E) Hücre içerisine kalsiyum girişini baskılar'],
+   d:4, acik:'β1 → cAMP → PKA → L-tip Ca²⁺ kanalı fosforilasyonu → Ca²⁺ girişi ARTAR, kesinlikle baskılanmaz. 3 yılda tekrar etti.'},
+  {s:'fiz',yil:'3 yılda tekrar',konu:'Endokrin — Leptin',
+   soru:'Leptinin etkileriyle UYUMLU olan hangisidir?',
+   opts:['A) NPY salgılanmasını artırır','B) POMC yapımını uyarır','C) İştahı artırır','D) Kahverengi yağ dokusu miktarını azaltır','E) Vücudun soğumasına neden olur'],
+   d:1, acik:'Leptin hipotalamusta POMC nöronlarını aktive eder (tokluk) + NPY/AgRP\'yi baskılar (iştah azalır). Kahverengi yağ dokusunu aktive eder → termogenez ↑. 3 yılda tekrar etti.'},
+  {s:'fiz',yil:'3 yılda tekrar',konu:'KVS — Yavaş Yanıt AP',
+   soru:'Yavaş yanıt aksiyon potansiyelinin karakteristikleriyle uyumlu OLMAYAN hangisidir?',
+   opts:['A) Sinoatriyal nodda görülür','B) Dinlenim zar potansiyeli stabil değildir','C) Eşik sonrası depolarizasyondan Na+ sorumludur','D) İstirahat membran potansiyeli ≈ -60 mV\'dur','E) Depolarizasyonun pik noktası 0 mV\'un üstüne az çıkar'],
+   d:2, acik:'Yavaş yanıt AP\'de Faz 0\'dan Ca²⁺ sorumlu, Na⁺ değil. Hızlı yanıt AP\'de Na⁺ sorumlu. 3 yılda tekrar etti.'},
+  {s:'fiz',yil:'3 yılda tekrar',konu:'KVS — Venöz Sistem',
+   soru:'Venöz sistemin temel özellikleriyle uyumlu OLMAYAN hangisidir?',
+   opts:['A) Venöz kompliyans arteriyel sistemden çok daha yüksektir','B) Venöz tonusun artması kalbe dönen kan hacmini artırır','C) Damar tonusunun artması kalbe dönen kan miktarında azalmaya neden olur','D) Toplam kanın büyük bölümü venöz sistemde bulunur','E) Ekstremite venlerinde kapaklar bulunur'],
+   d:2, acik:'Venöz tonus ↑ → venler sıkışır → kanı kalbe iter → venöz dönüş ARTAR. "Azalır" demek yanlış. 3 yılda tekrar etti.'},
+  {s:'fiz',yil:'3 yılda tekrar',konu:'KVS — Ön Yük',
+   soru:'Artmış ön yükünün yarattığı etki ile uyumlu OLMAYAN hangisidir?',
+   opts:['A) Kardiyak siklus sırasında ventriküklün yaptığı iş artar','B) Sistol sonu ventriküler içi hacim artar','C) Diyastol sonu ventriküler içi hacim artar','D) Atım hacmi artar','E) Ejeksiyon fraksiyonu artar veya değişmez'],
+   d:1, acik:'Frank-Starling: Ön yük ↑ → EDV ↑ → kasılma güçlenir → atım hacmi ↑ → ESV aynı kalır veya AZALIR. Artmaz. 3 yılda tekrar etti.'},
+  {s:'fiz',yil:'2 yılda birebir',konu:'Böbrek — K+ Kaydırma',
+   soru:'Hücre içindeki K+\'u hücre DIŞINA kaydıran etkenler hangileridir?\nI) Diabetes mellitus  II) Ozmolarite artışı  III) İnsülin  IV) Beta adrenerjik uyarılma',
+   opts:['A) I ve II','B) II ve III','C) I ve III','D) III ve IV','E) II ve IV'],
+   d:0, acik:'DM (insülin yok) + ozmolarite artışı K\'u dışarı çıkarır. İnsülin ve beta adrenerjik ise Na-K ATPaz aktive → K\'u İÇERİ çeker. 2 yılda birebir çıktı.'},
+  {s:'fiz',yil:'2 yılda birebir',konu:'D Vitamini — Sentez Sırası',
+   soru:'Aktif D vitamini (kolekalsiferol) sentez sırası hangisidir?',
+   opts:['A) Böbrek → Karaciğer → Deri','B) Böbrek → Deri → Karaciğer','C) Deri → Böbrek → Karaciğer','D) Deri → Karaciğer → Böbrek','E) Karaciğer → Deri → Böbrek'],
+   d:3, acik:'Deri: UV → kolekalsiferol. Karaciğer: 25-hidroksilasyon. Böbrek: 1α-hidroksilasyon → aktif kalsitriol. 2 yılda birebir çıktı.'},
+
+  // ANATOMİ ─────────────────────
+  {s:'ana',yil:'3 yılda birebir',konu:'Nöroanatomi — Ventriküler Sistem',
+   soru:'Lateral ventriküller ile 3. ventrikülleri birbirine bağlayan açıklık hangisidir?',
+   opts:['A) Foramen interventriculare','B) Apertura mediana (Magendie)','C) Apertura lateralis (Luschkae)','D) Villi arachnoidale','E) Aqueductus mesencephali'],
+   d:0, acik:'Lateral ventriküller ↔ 3. ventrikül = Foramen interventriculare (Monro deliği). Aquaeductus mesencephali ise 3. ↔ 4. ventrikülleri bağlar. 3 yılda birebir çıktı.'},
+  {s:'ana',yil:'3 yılda birebir',konu:'Nöroanatomi — Sulcus Centralis',
+   soru:'Sulcus centralis hangi gyrusları ve lobları birbirinden ayırır?',
+   opts:['A) Lobus frontalis - Lobus temporalis','B) Lobus temporalis - Lobus occipitalis','C) Lobus frontalis - Lobus occipitalis','D) Lobus temporalis - Lobus parietalis','E) Lobus frontalis - Lobus parietalis'],
+   d:4, acik:'Sulcus centralis önünde motor korteks (gyrus precentralis), arkasında somatosensory korteks (gyrus postcentralis). Frontali parietalden ayırır. 3 yılda birebir çıktı.'},
+  {s:'ana',yil:'3 yılda birebir',konu:'Nöroanatomi — Columna Posterior',
+   soru:'Columna posterior\'a ait bir nükleus hangisidir?',
+   opts:['A) Nuc. medialis','B) Nuc. lateralis','C) Nuc. intermediolateralis','D) Nuc. posteromarginalis','E) Nuc. intermediomedialis'],
+   d:3, acik:'Columna posterior nükleusları: posteromarginalis, gelatinosus, proprius, intermediomedialis. Nuc. intermediolateralis LATERAL kolumda (sempatik pregangliyonik). Yanıltıcı seçenek! 3 yılda birebir çıktı.'},
+  {s:'ana',yil:'3 yılda birebir',konu:'Nöroanatomi — Trigeminal',
+   soru:'Yüz ve baş bölgesinin ağrı-ısı duyusunu taşıyan yolun birinci nöronu hangisidir?',
+   opts:['A) Ganglion spinale','B) Nucleus spinalis nervi trigeminale','C) Ganglion trigemini (semilunare)','D) Nucleus ventralis posteromedialis','E) Nucleus intralaminaris'],
+   d:2, acik:'Gasser ganglionu = Ganglion trigemini = Ganglion semilunare — hepsi aynı yer. 1. nöron burada. 3 yılda birebir çıktı.'},
+  {s:'ana',yil:'3 yılda birebir',konu:'Nöroanatomi — Propriosepsiyon',
+   soru:'Gövde ve alt ekstremiteye hareket yaptıran, eklem ve kasların bilinçsiz proprioseptif duyusunu taşıyan yol hangisidir?',
+   opts:['A) Fasciculus gracilis','B) Tractus spinocerebellaris posterior','C) Tractus cuneocerebellaris','D) Tractus trigeminothalamicus posterior','E) Tractus trigeminocerebellaris'],
+   d:1, acik:'Bilinçsiz propriosepsiyon alt ekstremite → spinocerebellaris POSTERIOR. Çaprazlaşmaz, ipsilateral. Clarke nükleusundan başlar. 3 yılda birebir çıktı.'},
+  {s:'ana',yil:'2 yılda birebir',konu:'Nöroanatomi — N. Trochlearis',
+   soru:'Beyin sapında arkadan başlayan kafa çiftini işaretleyiniz.',
+   opts:['A) N. oculomotorius','B) N. opticus','C) N. trochlearis','D) N. vagus','E) N. abducens'],
+   d:2, acik:'N. trochlearis (4. kafa çifti) mesencephalonun arka (dorsal) yüzünden çıkan TEK kafa siniridir. 2 yılda birebir çıktı.'},
+  {s:'ana',yil:'3 yılda birebir',konu:'Nöroanatomi — Wallenberg',
+   soru:'Wallenberg Sendromu hangi arterin lezyonuna bağlı gelişir?',
+   opts:['A) A. cerebellaris posterior inferior','B) A. choroidea anterior','C) A. cerebri anterior','D) A. cerebri media','E) A. communicans anterior'],
+   d:0, acik:'Wallenberg = lateral medulla sendromu. PICA tıkanması. İpsilateral yüz + kontralateral vücut ağrı-ısı kaybı, ipsilateral Horner, serebellar ataksi. 3 yılda birebir çıktı.'},
+  {s:'ana',yil:'4 yılda birebir',konu:'Nöroanatomi — Otonom Ganglion',
+   soru:'Otonom ganglion OLMAYAN yapıyı işaretleyiniz.',
+   opts:['A) Ganglion ciliare','B) Ganglion oticum','C) Ganglion semilunare','D) Ganglion pterygopalatina','E) Ganglion aorticorenale'],
+   d:2, acik:'Ganglion semilunare = Gasser ganglionu = Ganglion trigemini. Somatik DUYSAL ganglyon, otonom değil. 4 yılda tekrar etti — en çok tekrar eden soru!'},
+  {s:'ana',yil:'3 yılda çıktı',konu:'Karın — Mide Arka Yüzü',
+   soru:'Midenin arka yüzünde aşağıdaki yapılardan hangisi BULUNMAZ?',
+   opts:['A) Diaphragma','B) Flexura coli dextra','C) Splen (Dalak)','D) Gl. suprarenalis sinistra','E) Pankreas'],
+   d:1, acik:'Flexura coli dextra karaciğer alt yüzü komşusu, midenin arka yüzünde değil. Mide arka yüzünde: diaphragma, dalak, sol adrenal, pankreas, sol böbrek üstü. 3 yılda çıktı.'},
+  {s:'ana',yil:'2 yılda birebir',konu:'Karın — Oesophagus',
+   soru:'Oesophagus ile ilgili aşağıdakilerden hangisi doğru DEĞİLDİR?',
+   opts:['A) Pharynx\'ten mideye 23-25 cm uzunluğunda kanaldır','B) Hiatus oesophageus yoluyla karına girer','C) Trachea pars cervicalis ile önde komşudur','D) Pars abdominalis karaciğer lobus dextra\'da iz bırakır','E) Sindirim kanalının en dar yeridir'],
+   d:3, acik:'Pars abdominalis karaciğer LOBUS SINISTRA\'da iz bırakır, dextra\'da değil. 2 yılda birebir çıktı.'},
+  {s:'ana',yil:'3 yılda tekrar',konu:'Karın — A. Mesenterica',
+   soru:'A. mesenterica inferior\'un dallarından birisidir hangisi?',
+   opts:['A) A. rectalis inferior','B) A. ileocolica','C) A. colica dextra','D) A. colica sinistra','E) A. rectalis media'],
+   d:3, acik:'AMI dalları: A. colica sinistra, Aa. sigmoideae, A. rectalis superior. AMS dalları: A. ileocolica, A. colica dextra, A. colica media, intestinal arterler. AMS = sağ, AMI = sol. 3 yılda tekrar etti.'},
+  {s:'ana',yil:'2 yılda birebir',konu:'Karın — Mesane',
+   soru:'Erkekte hangi oluşum mesanenin arka yüz komşusudur?',
+   opts:['A) Testis','B) Plexus testicularis','C) Vesicula seminales','D) Cowper bezleri','E) Epididymis'],
+   d:2, acik:'Erkekte mesane arka yüzü: Vesicula seminalis + Ampulla ductus deferentis + Rectum. 2 yılda birebir çıktı.'},
+
+  // FARMAKOLOJİ ─────────────────────
+  {s:'far',yil:'2 yılda birebir',konu:'Antagonizma — Fizyolojik',
+   soru:'Bir ilacın etkisinin, ayrı bir reseptör veya mekanizma aracılığıyla aksi yönde etki yapan başka bir ilaç tarafından azaltılmasına ne ad verilir?',
+   opts:['A) Fizyolojik antagonizma','B) Kimyasal antagonizma','C) Farmakolojik antagonizma','D) Kompetitif antagonizma','E) Non-kompetitif antagonizma'],
+   d:0, acik:'Farklı reseptör + farklı mekanizma + zıt etki = fizyolojik antagonizma. Örnek: Nitratlar (vazodilatör) — Fenilefrin (vazokonstriktör). 2 yılda birebir çıktı.'},
+  {s:'far',yil:'2 yılda çıktı',konu:'Antagonizma — Non-kompetitif',
+   soru:'Non-kompetitif antagonizma için yanlış olan ifadeyi işaretleyiniz.',
+   opts:['A) Aynı reseptör düzeyinde gerçekleşir','B) Farmakolojik antagonizmanın bir alt çeşididir','C) Agonistin oluşturduğu maksimum etki azalır','D) Agonistin dozu artırılırsa antagonizmanın üstesinden gelinebilir','E) Yeni reseptör sentezi ile agonist etkisi geri kazanılabilir'],
+   d:3, acik:'Non-kompetitifde doz artırılsa da maksimum etki elde edilemez — maksimum etki kalıcı olarak düşer. Kompetitifde doz artırılınca aşılabilir. 2 yılda çıktı.'},
+  {s:'far',yil:'2 yılda birebir',konu:'Farmakokinetik — Serbest İlaç',
+   soru:'İlaçların dokularda, hücrelerde etki gösteren ve ilaç dağılımında da önem arz eden ilaç kısmı hangisidir?',
+   opts:['A) Plazmadaki bağlı ilaç','B) Dokulara sekrete olan ilaç','C) Plazmadaki serbest ilaç','D) Dağılımı en yüksek ilaç','E) Albümine bağlı olan ilaç'],
+   d:2, acik:'Proteine bağlı ilaç depo formundadır, inaktiftir. Serbest (unbound) ilaç reseptöre bağlanır, dokuya dağılır, metabolize olur ve atılır. 2 yılda birebir çıktı.'},
+  {s:'far',yil:'2 yılda birebir',konu:'CYP450 — Propranolol',
+   soru:'Hangi sitokrom P450 enziminin genetik polimorfizmi propranolol\'un duyarlılığını değiştirir?',
+   opts:['A) CYP2B6','B) CYP3A5','C) CYP2D6','D) CYP2C19','E) CYP2C9'],
+   d:2, acik:'Propranolol başta CYP2D6 ile metabolize edilir. Zayıf metabolize ediciler propranololu yavaş yıkar → kan düzeyi yükselir → yan etki riski artar. 2 yılda birebir çıktı.'},
+  {s:'far',yil:'2 yılda birebir',konu:'Toksikoloji — Aktif Kömür',
+   soru:'Tekrarlanan dozda aktif kömür verilmesinin yararlı olabileceği zehirlenme etkenleri arasında YER ALMAZ hangisi?',
+   opts:['A) Trisiklik antidepresanlar','B) Digoksin','C) Ağır metaller','D) Teofilin','E) Fenobarbital'],
+   d:2, acik:'Ağır metaller (kurşun, civa, arsenik, demir) aktif kömüre bağlanmaz. Bunlarda şelatör ajanlar kullanılır. Trisiklikler, digoksin, teofilin, fenobarbital aktif kömürle tutulur. 2 yılda birebir çıktı.'},
+  {s:'far',yil:'2 yılda çıktı',konu:'Toksikoloji — Antidot',
+   soru:'Zehirlenme etkeni nitritler ise antidotumuz ne olmalıdır?',
+   opts:['A) N-asetilsistein','B) Fizostigmin','C) Metilen mavisi','D) Diazepam','E) Dimerkaprol'],
+   d:2, acik:'Nitritler hemoglobini methemoglobine çevirir → O2 taşınamaz. Metilen mavisi Fe3+\'yi Fe2+\'ye indirger → methemoglobin düzelir. 2022-23\'te çıktı.'},
+  {s:'far',yil:'2 yılda çıktı',konu:'Genetik — Antisipasyon',
+   soru:'Huntington hastalığı CAG trinükleotid tekrar artışı ile ortaya çıkar. Tekrar sayısı arttıkça hastalık daha erken ve şiddetli ortaya çıkar. Bu genetik özelliğin adı nedir?',
+   opts:['A) Antisipasyon','B) Penetrans eksikliği','C) Multifaktöriyel kalıtım','D) De novo mutasyon','E) Heteroplazmi'],
+   d:0, acik:'Antisipasyon: Her nesilde hastalığın daha erken ve şiddetli ortaya çıkması. CAG tekrar sayısı her kuşakta artar. Myotonik distrofi de antisipasyon gösterir. 2021-22\'de çıktı.'},
+  {s:'far',yil:'2 yılda çıktı',konu:'Genetik — Kromozomal Anomali',
+   soru:'En sık erkek hipogonadizminin bilinen nedenlerinden biri olup azoospermiye bağlı erkek infertilitesine neden olan sendrom hangisidir?',
+   opts:['A) Triple X sendromu','B) Turner sendromu','C) Klinefelter sendromu','D) Down sendromu','E) Edwards sendromu'],
+   d:2, acik:'Klinefelter (47, XXY): Sadece erkeklerde. Azoospermi, jinekomasti, uzun boy, küçük testis. En sık erkek infertilite nedeni. 2022-23\'te çıktı.'},
+
+  // PATOLOJİ ─────────────────────
+  {s:'pat',yil:'2 yılda birebir',konu:'Hücre Zedelenmesi — Geri Dönüşümlü',
+   soru:'Hücre zedelenmesinin geri dönüşümlü aşamasında beklenen hücresel değişikliklerden DEĞİLDİR hangisi?',
+   opts:['A) Hücre içi Na artışı','B) Sitoplazmik Ca artışı','C) Mitokondriyal geçirgenlik kanallarının oluşması','D) Membran fonksiyonlarında ağır bozukluk','E) Yağlı değişiklik'],
+   d:3, acik:'Membran fonksiyonlarında ağır bozukluk geri dönüşümsüz aşamada görülür. Geri dönüşümlü aşamada: Na artışı, Ca artışı başlangıçta, mitokondriyal şişme, yağlı değişiklik. 2 yılda birebir çıktı.'},
+  {s:'pat',yil:'2 yılda çıktı',konu:'Apoptoz — Proapoptotik',
+   soru:'İntrinsik apoptoz (mitokondriyal yol) mekanizmasında rol oynayan bir proapoptotik molekül hangisidir?',
+   opts:['A) Bcl-XL','B) Bid','C) Trombospondin','D) Bcl-2','E) Bax'],
+   d:4, acik:'Bax proapoptotik BCL-2 ailesi üyesi. Mitokondri dış membranında por oluşturur → sitokrom c sitoplazmaya gider → apoptozom → kaspaz-9 → kaspaz-3 → apoptoz. Bcl-2 ve Bcl-XL ANTİapoptotik. 2 yılda çıktı.'},
+  {s:'pat',yil:'2 yılda çıktı',konu:'Apoptoz — CTL',
+   soru:'Sitotoksik T hücrelerinin apoptozisi tetiklemesinde rol oynayan bir protein hangisidir?',
+   opts:['A) Bcl-XL','B) Bid','C) Perforin','D) Bcl-2','E) Bax'],
+   d:2, acik:'CTL hedef hücrede perforin ile membran porları açar → granzim B içeri girer → kaspazları aktive eder → apoptoz. İkinci yol: FasL-Fas. 2 yılda çıktı.'},
+  {s:'pat',yil:'2 yılda çıktı',konu:'İnflamasyon — Granülom',
+   soru:'Aşağıdaki hastalıklardan hangisinde granülomatöz inflamasyon GÖRÜLMEZ?',
+   opts:['A) Tüberküloz','B) Kedi tırmığı hastalığı','C) Crohn hastalığı','D) Kist Hidatik','E) Ülseratif kolit'],
+   d:4, acik:'Ülseratif kolitte granülom YOK (kript apsesi var). Crohn\'da nonkazeöz granülomlar karakteristik. Tüberküloz, Sarkoidoz, Crohn, Kist Hidatik — hepsinde granülom. 2 yılda çıktı.'},
+  {s:'pat',yil:'2 yılda çıktı',konu:'Tromboz — VWF',
+   soru:'Tromboz gelişiminde aşağıdakilerden hangisinin rolü YOKTUR?',
+   opts:['A) Staz','B) Hipervizkozite','C) Hiperkoagülasyon','D) Von Willebrand faktör eksikliği','E) Endotel zedelenmesi'],
+   d:3, acik:'VWF eksikliği trombozda değil KANAMADA rol oynar. VWF olmazsa trombosit adezyonu olmaz → pıhtı oluşamaz. Staz, hiperkoagülasyon, endotel hasarı tromboz riskini artırır. 2 yılda çıktı.'},
+  {s:'pat',yil:'2024-25',konu:'Tromboz — Kırmızı Enfarkt',
+   soru:'Aşağıdaki olaylardan hangisinde kırmızı enfarkt gelişimi GÖRÜLMEZ?',
+   opts:['A) Venöz oklüzyon sonucu','B) Enfarkt alanında kanın toplanmasına izin veren gevşek dokularda','C) Çift sirkülasyonlu dokularda','D) Daha önceden konjesyona uğramış dokularda','E) Arteriyel oklüzyon sonucu'],
+   d:4, acik:'Arteriyel oklüzyon → kan dokuya giremez → solukluk → BEYAZ enfarkt (kalp, böbrek, dalak). Kırmızı enfarkt: venöz oklüzyon, gevşek doku, çift sirkülasyon. 2024-25\'te çıktı.'},
+  {s:'pat',yil:'2023-24',konu:'İmmün Yetmezlik — Hiper IgM',
+   soru:'Aşağıdaki immün yetmezlik sendromlarından hangisinde CD40-CD40 ligand genindeki mutasyonlar sorumludur?',
+   opts:['A) Hiper IgM sendromu','B) İzole IgA eksikliği','C) Bruton agammaglobulinemisi','D) Ağır kombine immün yetmezlik','E) DiGeorge Sendromu'],
+   d:0, acik:'CD40L (CD154) mutasyonu T hücrelerinde → B hücresine "izotip değiştir" sinyali verilemiyor → IgM\'den IgG/IgA/IgE\'ye geçiş olmaz → IgM yüksek, diğerleri çok düşük. 2023-24\'te çıktı.'},
+  {s:'pat',yil:'2022-23',konu:'Doğal İmmünite',
+   soru:'Doğal immünite ile ilgili doğru seçeneği işaretleyiniz.',
+   opts:['A) Mikrobiyal invazyon için bir bariyerdir','B) Enflamasyonu indükler','C) Adaptif immün cevapları tetikler ve antiviral immüniteye yol açar','D) Reseptörler enfeksiyon, allerji ve otoimmünitede terapötik hedef olarak kullanılabilir','E) Hepsi'],
+   d:4, acik:'Doğal immünitenin tüm bu özellikleri doğrudur. Bariyerdir, inflamasyonu başlatır, adaptif immüniteyi aktive eder, TLR gibi reseptörleri ilaç hedefi olarak kullanılabilir. 2022-23\'te çıktı.'},
+];
+
+// ─── DURUM ──────────────────────────────────────────────
+let quizFilter = 'all';
+let quizList = [];
+let quizIdx = 0;
+let quizCorrect = 0;
+let quizWrong = 0;
+let quizAnswered = false;
+
+let fcFilter = 'all';
+let fcList = [];
+let fcIdx = 0;
+let fcFlipped = false;
+
+const SUBJ_COLORS = {
+  fiz:{bg:'rgba(29,158,117,.12)',text:'#1D9E75',label:'🫀 Fizyoloji'},
+  ana:{bg:'rgba(41,128,185,.12)',text:'#2980b9',label:'🧠 Anatomi'},
+  far:{bg:'rgba(142,68,173,.12)',text:'#8e44ad',label:'💊 Farmakoloji'},
+  pat:{bg:'rgba(192,57,43,.12)',text:'#c0392b',label:'🔬 Patoloji'},
+};
+
+// ─── SEKMELER ───────────────────────────────────────────
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  if(id==='quiz') initQuiz();
+  if(id==='flash') initFc();
+}
+
+// ─── QUIZ ───────────────────────────────────────────────
+function startQuiz(filter){
+  quizFilter = filter;
+  showTab('quiz');
+  document.querySelectorAll('#quiz .tab').forEach(t=>t.classList.remove('active'));
+}
+
+function setFilter(f){
+  quizFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  initQuiz();
+}
+
+function initQuiz(){
+  quizList = quizFilter === 'all' ? [...SORULAR] : SORULAR.filter(q=>q.s===quizFilter);
+  quizList = quizList.sort(()=>Math.random()-.5);
+  quizIdx = 0; quizCorrect = 0; quizWrong = 0; quizAnswered = false;
+  document.getElementById('score-card').classList.remove('show');
+  renderQ();
+}
+
+function renderQ(){
+  const q = quizList[quizIdx];
+  if(!q) return;
+  quizAnswered = false;
+  const c = SUBJ_COLORS[q.s];
+  document.getElementById('quiz-title').textContent = q.konu;
+  document.getElementById('q-counter').textContent = `${quizIdx+1} / ${quizList.length}`;
+  document.getElementById('prog-fill').style.width = `${(quizIdx/quizList.length)*100}%`;
+
+  document.getElementById('q-area').innerHTML = `
+    <div class="q-card">
+      <div class="q-meta">
+        <span class="q-badge" style="background:${c.bg};color:${c.text}">${c.label}</span>
+        <span class="q-badge" style="background:rgba(239,159,39,.12);color:#EF9F27">${q.yil}</span>
+      </div>
+      <div class="q-text">${q.soru}</div>
+      <div class="options" id="opts">
+        ${q.opts.map((o,i)=>`<button class="opt-btn" onclick="pick(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="explanation" id="exp"><strong>Açıklama:</strong> ${q.acik}</div>
+      <div class="q-actions" id="acts" style="display:none">
+        <button class="btn btn-green" onclick="nextQ()">${quizIdx<quizList.length-1?'Sonraki soru →':'Sonuçları gör →'}</button>
+      </div>
+    </div>`;
+}
+
+function pick(i){
+  if(quizAnswered) return;
+  quizAnswered = true;
+  const q = quizList[quizIdx];
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  if(i===q.d){quizCorrect++;btns[i].classList.add('correct');}
+  else{quizWrong++;btns[i].classList.add('wrong');btns[q.d].classList.add('correct');}
+  document.getElementById('exp').classList.add('show');
+  document.getElementById('acts').style.display='flex';
+}
+
+function nextQ(){
+  quizIdx++;
+  if(quizIdx>=quizList.length){showScore();return;}
+  renderQ();
+}
+
+function showScore(){
+  document.getElementById('q-area').innerHTML='';
+  document.getElementById('quiz-title').textContent='Sonuç';
+  const pct=Math.round(quizCorrect/quizList.length*100);
+  const msgs=['Devam et 💪','İyi gidiyor 📚','Güzel! 🎯','Neredeyse hazırsın 🔥','Mükemmel! 🏆'];
+  const sc=document.getElementById('score-card');
+  sc.classList.add('show');
+  document.getElementById('sc-score').textContent=`${quizCorrect}/${quizList.length}`;
+  document.getElementById('sc-msg').textContent=msgs[Math.min(Math.floor(pct/20),4)];
+  document.getElementById('sc-cor').textContent=quizCorrect;
+  document.getElementById('sc-wr').textContent=quizWrong;
+  document.getElementById('sc-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width='100%';
+}
+
+function restartQuiz(){initQuiz();}
+
+// ─── FLASHCARD ──────────────────────────────────────────
+function setFcFilter(f){
+  fcFilter=f;
+  document.querySelectorAll('#flash .filter-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  initFc();
+}
+
+function initFc(){
+  fcList = fcFilter==='all'?[...SORULAR]:SORULAR.filter(q=>q.s===fcFilter);
+  fcList = fcList.sort(()=>Math.random()-.5);
+  fcIdx=0; renderFc();
+}
+
+function renderFc(){
+  if(!fcList.length) return;
+  const q=fcList[fcIdx];
+  const c=SUBJ_COLORS[q.s];
+  document.getElementById('fc-wrapper').classList.remove('flipped');
+  fcFlipped=false;
+  document.getElementById('fc-subj-label').textContent=c.label;
+  document.getElementById('fc-subj-label').style.background=c.bg;
+  document.getElementById('fc-subj-label').style.color=c.text;
+  document.getElementById('fc-q').textContent=q.soru;
+  document.getElementById('fc-a').innerHTML=`<strong>Cevap:</strong> ${q.opts[q.d]}<br/><br/><span style="color:var(--muted);font-size:.88em">${q.acik}</span>`;
+  document.getElementById('fc-count').textContent=`${fcIdx+1} / ${fcList.length}`;
+}
+
+function flipCard(){
+  fcFlipped=!fcFlipped;
+  document.getElementById('fc-wrapper').classList.toggle('flipped',fcFlipped);
+}
+
+function fcMove(d){
+  fcIdx=(fcIdx+d+fcList.length)%fcList.length;
+  renderFc();
+}
+
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('flash').classList.contains('active')){
+    if(e.key==='ArrowRight') fcMove(1);
+    if(e.key==='ArrowLeft') fcMove(-1);
+    if(e.key===' '){e.preventDefault();flipCard();}
+  }
+});
+
+// init
+initQuiz();
+initFc();
+</script>
+</body>
+</html>
