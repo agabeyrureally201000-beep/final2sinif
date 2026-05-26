@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Anatomi — Ders Notları</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--card:#1a1d27;--card2:#20243a;--border:#2a2d3a;--text:#e8eaf0;--muted:#8b8fa8;--accent:#4f8ef7;--green:#1D9E75;--orange:#EF9F27;--red:#e74c3c}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+nav{display:flex;gap:8px;padding:.875rem 1.25rem;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap}
+nav h1{font-size:.95rem;font-weight:700;margin-right:auto}
+nav a{color:var(--muted);text-decoration:none;font-size:.82rem;padding:5px 10px;border-radius:7px;transition:.15s}
+nav a:hover,nav a.active{color:var(--text);background:var(--card2)}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 48px)}
+.sidebar{border-right:1px solid var(--border);padding:1.25rem;position:sticky;top:0;height:calc(100vh - 48px);overflow-y:auto}
+.sidebar h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.75rem;font-weight:600}
+.menu-item{display:block;padding:8px 12px;border-radius:9px;font-size:.83rem;color:var(--muted);text-decoration:none;margin-bottom:2px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:.15s}
+.menu-item:hover,.menu-item.active{background:var(--card2);color:var(--text)}
+.menu-item.active{color:var(--accent);font-weight:500}
+.content{padding:2rem 2.5rem;max-width:740px}
+.section{display:none}
+.section.active{display:block}
+h1.ders-baslik{font-size:1.6rem;font-weight:700;margin-bottom:.4rem}
+.ders-meta{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+h2.bolum{font-size:1.15rem;font-weight:700;color:var(--text);margin:2rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+h3.alt{font-size:1rem;font-weight:600;color:var(--accent);margin:1.5rem 0 .6rem}
+p{font-size:.9rem;line-height:1.75;color:#c8cad8;margin-bottom:.75rem}
+ul,ol{padding-left:1.4rem;margin-bottom:.75rem}
+li{font-size:.9rem;line-height:1.7;color:#c8cad8;margin-bottom:.15rem}
+li strong{color:var(--text)}
+.sinav-kutu{background:rgba(239,159,39,.08);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#f0d090}
+.sinav-kutu strong{color:var(--orange);font-weight:600}
+.onemli{background:rgba(29,158,117,.08);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#a8f0d8}
+.onemli strong{color:var(--green)}
+.uyari{background:rgba(231,76,60,.08);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#f5a49a}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.83rem}
+th{background:var(--card2);padding:8px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--border);color:var(--text)}
+td{padding:7px 12px;border-bottom:1px solid var(--border);color:#c8cad8;vertical-align:top;line-height:1.5}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.tag{display:inline-block;font-size:.68rem;padding:2px 8px;border-radius:20px;font-weight:600;margin-right:4px}
+@media(max-width:640px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:.75rem 1rem}
+  .sidebar h2{display:none}
+  .menu-wrap{display:flex;gap:4px;flex-wrap:wrap}
+  .menu-item{width:auto;display:inline-block}
+  .content{padding:1.25rem}
+}
+</style>
+
+</head>
+<body>
+<nav>
+  <h1>📚 ÇÜTF Dönem 2</h1>
+  <a href="index.html">Ana Sayfa</a>
+  <a href="dersler.html">Ders Notları</a>
+  <a href="cikmistar.html">Çıkmış Sorular</a>
+</nav>
+<div class="layout">
+  <div class="sidebar">
+    <h2>🧠 Anatomi</h2>
+    <div class="menu-wrap">
+<button class="menu-item" id="m-noro" onclick="goster('noro')">🧠 Nöroanatomi</button>
+<button class="menu-item" id="m-karin" onclick="goster('karin')">🏥 Karın</button>
+<button class="menu-item" id="m-toraks" onclick="goster('toraks')">🫁 Toraks</button>
+<button class="menu-item" id="m-bas" onclick="goster('bas')">👤 Baş & Boyun</button>
+<button class="menu-item" id="m-pelvis" onclick="goster('pelvis')">🦴 Pelvis</button>
+    </div>
+  </div>
+  <div class="content">
+<div class="section" id="s-noro">
+<h1 class="ders-baslik">🧠 Anatomi</h1>
+<p class="ders-meta">5 bölüm · En yüksek tekrar oranı — ilk 5-6 soru garantili puan</p>
+
+<h2 class="bolum">Nöroanatomi</h2>
+
+<h3 class="alt">Ventriküler Sistem</h3>
+<p>Lateral ventriküller → <strong>Foramen interventriculare (Monro)</strong> → III. ventrikül → <strong>Aquaeductus mesencephali (Sylvius)</strong> → IV. ventrikül → Foramen Magendie + Luschkae → Subaraknoid aralık</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda birebir):</strong> Lateral ventriküller ile 3. ventriküllü birbirine bağlayan → <strong>Foramen interventriculare</strong>.</div>
+
+<h3 class="alt">Beyin Lobları ve Sulkuslar</h3>
+<table>
+<tr><th>Sulkus</th><th>Ayırdığı Loblar</th></tr>
+<tr><td>Sulcus centralis (Rolando)</td><td><strong>Frontalis — Parietalis</strong></td></tr>
+<tr><td>Sulcus lateralis (Sylvius)</td><td>Frontalis + Parietalis — Temporalis</td></tr>
+<tr><td>Sulcus parietooccipitalis</td><td>Parietalis — Occipitalis</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda birebir):</strong> Sulcus centralis hangi lobları ayırır → <strong>Frontalis — Parietalis</strong>.</div>
+
+<h3 class="alt">Önemli Korteks Alanları</h3>
+<table>
+<tr><th>Alan</th><th>Brodmann</th><th>Gyrus</th></tr>
+<tr><td>Primer motor</td><td>4</td><td>Gyrus precentralis</td></tr>
+<tr><td>Primer somatosensory</td><td>1,2,3</td><td>Gyrus postcentralis</td></tr>
+<tr><td>Primer görme</td><td>17</td><td>Gyrus calcarinus</td></tr>
+<tr><td>Primer işitme</td><td>41</td><td>Gyrus temporalis transversus (Heschl)</td></tr>
+<tr><td>Wernicke</td><td>22</td><td>Gyrus temporalis superior</td></tr>
+<tr><td>Broca</td><td>44,45</td><td>Gyrus frontalis inferior</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Primer işitme sahası → <strong>Gyrus temporalis transversus, Brodmann 41</strong>.</div>
+
+<h3 class="alt">Medulla Spinalis — Columnalar</h3>
+<ul>
+<li><strong>Columna anterior:</strong> Alfa + gama motor nöronlar</li>
+<li><strong>Columna posterior:</strong> Nuc. posteromarginalis (ağrı-ısı), Nuc. gelatinosus, Nuc. proprius</li>
+<li><strong>Columna lateralis:</strong> Nuc. intermediolateralis — sempatik pregangliyonik (C8-L2)</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda birebir):</strong> Columna posterior'a ait nükleus → <strong>Nuc. posteromarginalis</strong>. Nuc. intermediolateralis lateral kolumda — yanıltıcı seçenek!</div>
+
+<h3 class="alt">Duysal Yollar</h3>
+<table>
+<tr><th>Yol</th><th>Duygu</th><th>Çaprazlaşma</th></tr>
+<tr><td>Tr. spinothalamicus lateralis</td><td>Ağrı, ısı</td><td>Arka boynuzda — karşı tarafa geçer</td></tr>
+<tr><td>Fasciculus gracilis/cuneatus</td><td>Bilinçli propriosepsiyon, ince dokunma</td><td>Medulla'da (nucleus gracilis/cuneatus'ta)</td></tr>
+<tr><td>Tr. spinocerebellaris posterior</td><td>Bilinçsiz propriosepsiyon (alt ext.)</td><td><strong>Çaprazlaşmaz</strong> — Clarke nükleusu</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda birebir):</strong> Bilinçsiz proprioseptif duyuyu taşıyan yol → <strong>Tractus spinocerebellaris posterior</strong>.</div>
+
+<h3 class="alt">Trigeminal Sistem</h3>
+<p>N. trigeminus (5. kafa çifti) yüz bölgesinin duyusunu taşır.</p>
+<ul>
+<li><strong>1. nöron:</strong> Ganglion trigemini (semilunare = Gasser ganglionu)</li>
+<li><strong>2. nöron:</strong> Nucleus spinalis nervi trigeminalis (ağrı-ısı)</li>
+<li><strong>3. nöron:</strong> Talamus</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda birebir):</strong> Yüz ve baş bölgesinin ağrı-ısı duyusunu taşıyan yolun 1. nöronu → <strong>Ganglion trigemini (semilunare)</strong>.</div>
+
+<h3 class="alt">Kafa Çiftleri — Kritik Noktalar</h3>
+<table>
+<tr><th>No</th><th>İsim</th><th>Çıkış Yeri</th><th>Not</th></tr>
+<tr><td>III</td><td>N. oculomotorius</td><td>Mesencephalon ÖNden</td><td>Edinger-Westphal</td></tr>
+<tr><td>IV</td><td>N. trochlearis</td><td>Mesencephalon <strong>ARKADAN</strong></td><td>Tek arkadan çıkan!</td></tr>
+<tr><td>V</td><td>N. trigeminus</td><td>Pons</td><td>Ganglion semilunare</td></tr>
+<tr><td>VI</td><td>N. abducens</td><td>Pons-medulla sınırı</td><td>En uzun intrakranial</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Beyin sapında arkadan başlayan kafa çifti → <strong>N. trochlearis (4.)</strong>.</div>
+
+<h3 class="alt">Wallenberg Sendromu</h3>
+<p>Lateral medulla oblongata infarktı. <strong>A. cerebellaris posterior inferior (PICA)</strong> tıkanması.</p>
+<ul>
+<li>İpsilateral yüz: ağrı-ısı kaybı</li>
+<li>Kontralateral vücut: ağrı-ısı kaybı</li>
+<li>İpsilateral Horner: pitoz, miyozis, anhidroz</li>
+<li>Yutma güçlüğü, ses kısıklığı, nistagmus</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda birebir):</strong> Wallenberg sendromu hangi arterin lezyonu → <strong>PICA (A. cerebellaris posterior inferior)</strong>.</div>
+
+<h3 class="alt">Otonom Gangliyonlar</h3>
+<p><strong>Parasempatik baş gangliyonları (4 tane):</strong> Ciliare (göz), Pterygopalatinum (lakrimal), Submandibulare (submandibüler bez), Oticum (parotis)</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (4 yılda birebir — en çok tekrar):</strong> Otonom ganglion OLMAYAN → <strong>Ganglion semilunare</strong>. Bu somatik duysal gangliyon, otonom değil.</div>
+
+<h3 class="alt">Diencephalon</h3>
+<p><strong>Bölümleri:</strong> Talamus, Hipotalamus, Epitalamus (pineal bez), Subtalamus</p>
+<p><strong>Diencephalon'da BULUNMAYAN:</strong> Filum terminale (medulla spinalis), Lamina terminalis (telencephalon), Fossa rhomboidea (rhombencephalon)</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Diencephalon'da bulunmayan → <strong>Filum terminale</strong>.</div>
+</div>
+<div class="section" id="s-karin">
+<h2 class="bolum">Karın (Abdomen) Anatomisi</h2>
+
+<h3 class="alt">Oesophagus</h3>
+<ul>
+<li>Pharynx'ten mideye 23-25 cm musküler kanal</li>
+<li>Pars cervicalis, pars thoracalis, pars abdominalis olmak üzere 3 kısım</li>
+<li>Pars cervicalis önünde: Trachea</li>
+<li>Pars abdominalis: Karaciğer <strong>lobus sinistra'da</strong> impressio bırakır</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Pars abdominalis karaciğer lobus dextra'da iz bırakır → <strong>YANLIŞ</strong>. Lobus SINISTRA'da bırakır.</div>
+
+<h3 class="alt">Mide Arka Yüzü Komşulukları</h3>
+<p><strong>Mide arka yüzünde BULUNANLAR:</strong> Diaphragma, Splen (Dalak), Gl. suprarenalis sinistra, Pankreas, Sol böbrek üst kısmı, Mesocolon transversum</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> Mide arka yüzünde BULUNMAYAN → <strong>Flexura coli dextra</strong> (bu karaciğerin alt yüzü komşusu).</div>
+
+<h3 class="alt">A. Mesenterica Superior ve İnferior</h3>
+<table>
+<tr><th>Arter</th><th>Beslediği Yapılar</th></tr>
+<tr><td><strong>AMS</strong> (Superior)</td><td>İnce bağırsakların tümü, Caecum, Appendix, Colon ascendens, Colon transversum sağ 2/3</td></tr>
+<tr><td><strong>AMI</strong> (İnferior)</td><td>Colon descendens, Colon sigmoideum, Rectum üst kısmı. Dalları: A. colica sinistra, Aa. sigmoideae, A. rectalis superior</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> A. mesenterica inferior'un dalı → <strong>A. colica sinistra</strong>. Kural: AMS = sağ taraf, AMI = sol taraf.</div>
+
+<h3 class="alt">Retroperitoneal Yapılar</h3>
+<div class="onemli">
+<strong>Retroperitoneal (SADKAP — ezber):</strong> Böbrekler, Adrenal bezler, Duodenum (2-4. kısım), Kolon ascendens, Kolon descendens, Aorta, Pankreas (çoğu), Üreter + Rektum
+</div>
+<div class="onemli">
+<strong>İntraperitoneal:</strong> Mide, Jejunum, İleum, Transvers kolon, Sigmoid kolon, Dalak, Karaciğer, Safra kesesi
+</div>
+
+<h3 class="alt">Karaciğer</h3>
+<p><strong>4 lob:</strong> Lobus dexter, Lobus sinister, Lobus caudatus (Spiegel), Lobus quadratus</p>
+<p><strong>Porta hepatis'ten geçenler:</strong> V. portae (arkada), A. hepatica propria (solda önde), Ductus choledochus (sağda önde)</p>
+
+<h3 class="alt">Mesane Komşulukları</h3>
+<table>
+<tr><th>Yüz</th><th>Erkekte</th><th>Kadında</th></tr>
+<tr><td>Arka yüz</td><td>Vesicula seminalis + Ampulla ductus deferentis + Rectum</td><td>Uterus + Vagina</td></tr>
+<tr><td>Alt yüz</td><td>Prostat</td><td>Pelvik diaphragma</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Erkekte mesane arka yüz komşusu → <strong>Vesicula seminales</strong>.</div>
+</div>
+<div class="section" id="s-toraks">
+<h2 class="bolum">Toraks Anatomisi</h2>
+
+<h3 class="alt">Bronşiyal Ağaç</h3>
+<p>Trachea → Bronchus principalis → Bronchus lobaris → Bronchus segmentalis → Bronchiolus → Bronchiolus terminalis → <strong>Bronchiolus respiratorius</strong> → Ductus alveolaris → Saccus alveolaris → Alveolus</p>
+<div class="uyari"><strong>Dikkat:</strong> Bronchiolus terminalis'te gaz alışverişi OLMAZ — hâlâ iletim yolu! Gaz alışverişi bronchiolus respiratorius'tan başlar.</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Gaz alışverişinin yapıldığı yerlerden biri DEĞİLDİR → <strong>Bronchus lobaris</strong> (veya Bronchiolus terminalis).</div>
+<p><strong>Sağ bronchus principalis:</strong> Kısadır, geniştir, daha dik açılıdır → yabancı cisim sağa gider!</p>
+
+<h3 class="alt">Mediastinum</h3>
+<table>
+<tr><th>Bölüm</th><th>İçindeki Yapılar</th></tr>
+<tr><td>Superius</td><td>Arcus aortae ve dalları, VCS, Trachea, Oesophagus, Thymus, N. vagus, N. phrenicus</td></tr>
+<tr><td>Anterius</td><td>Thymus kalıntısı, bağ dokusu, lenf düğümleri</td></tr>
+<tr><td>Medius</td><td>Kalp ve perikard, Aorta ascendens, A. pulmonalis</td></tr>
+<tr><td>Posterius</td><td>Oesophagus, Aorta descendens, V. azygos, Ductus thoracicus, N. vagus, Truncus sympathicus</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV:</strong> Mediastinum superius'ta yer almaz → <strong>Kalp</strong> (mediastinum mediusta). V. brachiocephalica superius'ta.</div>
+
+<h3 class="alt">Kalp Anatomisi — Sağ Atrium</h3>
+<p><strong>Sağ atriumdaki yapılar:</strong> Crista terminalis, Fossa ovalis, M. pectinati, Ostium sinus coronarii, Auricula dextra</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Sağ atriumda yer almaz → <strong>M. papillaris</strong> (ventriküllerde bulunur).</div>
+<p><strong>Trabecula septomarginalis (moderatör bant):</strong> SAĞ VENTRİKÜLDE. İletim sisteminin Purkinje liflerini taşır.</p>
+
+<h3 class="alt">Akciğerler</h3>
+<table>
+<tr><th></th><th>Sağ Akciğer</th><th>Sol Akciğer</th></tr>
+<tr><td>Lob sayısı</td><td>3 (üst, orta, alt)</td><td>2 (üst, alt)</td></tr>
+<tr><td>Segment</td><td>10</td><td>8-9</td></tr>
+<tr><td>Özellik</td><td>Daha büyük ve ağır</td><td>Lingula (üst lobun parçası)</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Sağ akciğer facies mediastinalis'te bulunmaz → <strong>Arcus aortae</strong> (sol akciğer komşusu).</div>
+</div>
+<div class="section" id="s-bas">
+<h2 class="bolum">Baş ve Boyun Anatomisi</h2>
+
+<h3 class="alt">Glandula Thyroidea (Tiroit Bezi)</h3>
+<p>Boynun ön-orta kısmında, larynx ve tracheanın önünde. 2 lateral lob + isthmus + (bazen) pyramidal lob.</p>
+<table>
+<tr><th>Konum</th><th>Komşuluk</th></tr>
+<tr><td>Önde</td><td><strong>M. sternohyoideus, M. sternothyroideus, M. omohyoideus</strong></td></tr>
+<tr><td>Arka-medial</td><td>Larynx, trachea, oesophagus, N. laryngeus recurrens</td></tr>
+<tr><td>Arka-lateral</td><td>A. carotis communis, V. jugularis interna, N. vagus</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Glandula thyroidea'nın ön komşusu → <strong>M. sternohyoideus</strong>.</div>
+
+<h3 class="alt">Paranazal Sinüsler</h3>
+<table>
+<tr><th>Sinüs</th><th>Açıldığı Yer</th></tr>
+<tr><td>Sinus maxillaris</td><td>Meatus nasi medius</td></tr>
+<tr><td>Sinus frontalis</td><td>Meatus nasi medius</td></tr>
+<tr><td>Ethmoid anterior + medius</td><td>Meatus nasi medius</td></tr>
+<tr><td><strong>Ethmoid posterior</strong></td><td><strong>Meatus nasi SUPERIOR</strong></td></tr>
+<tr><td>Sinus sphenoidalis</td><td>Recessus sphenoethmoidalis</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25'te çıktı):</strong> Meatus nasi superior'a drene olan → <strong>Cellulae ethmoidales posteriores</strong>.</div>
+
+<h3 class="alt">Dış Kulak ve Orta Kulak</h3>
+<p><strong>Dış kulakta bulunanlar:</strong> Helix, Antihelix, Tragus, Antitragus, Lobulus, Scapha, Concha auriculae, Meatus acusticus externus</p>
+<p><strong>Orta kulak kemikçikleri:</strong> Malleus → İncus → Stapes (oval pencereye oturur)</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV:</strong> Dış kulakta yer almaz → <strong>Stapes</strong> (orta kulak kemiği).</div>
+
+<h3 class="alt">Burun Boşluğu Açılımları</h3>
+<ul>
+<li>Meatus nasi inferior: Ductus nasolacrimalis (gözyaşı kanalı)</li>
+<li>Meatus nasi medius: Sinus maxillaris, frontalis, ethmoid anterior-medius</li>
+<li>Meatus nasi superior: Sinus ethmoidalis posterior</li>
+<li>Recessus sphenoethmoidalis: Sinus sphenoidalis</li>
+</ul>
+</div>
+<div class="section" id="s-pelvis">
+<h2 class="bolum">Pelvis, Perine ve Ürogenital Anatomi</h2>
+
+<h3 class="alt">Diaphragma Pelvis ve Urogenitalis</h3>
+<table>
+<tr><th>Yapı</th><th>Kaslar</th></tr>
+<tr><td>Diaphragma pelvis</td><td><strong>M. levator ani</strong> (pubococcygeus + iliococcygeus + puborectalis) + M. coccygeus</td></tr>
+<tr><td>Diaphragma urogenitalis</td><td>M. transversus perinei profundus + M. sphincter urethrae externus</td></tr>
+<tr><td>Yüzeyel perine kasları</td><td>M. transversus perinei superficialis, M. ischiocavernosus, M. bulbospongiosus</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Diaphragma pelvina'ya katılan → <strong>M. levator ani</strong>.</div>
+
+<h3 class="alt">A. Uterina</h3>
+<p>A. uterina → <strong>A. iliaca interna</strong>'nın dalıdır. Ureter ile çaprazlaşır — "su köprünün altından geçer" (üreter alttan, A. uterina üstten). Histerektomide üreter hasarı riski buradadır!</p>
+
+<h3 class="alt">Kadın-Erkek Genital Homologlar</h3>
+<table>
+<tr><th>Kadın</th><th>Erkek</th></tr>
+<tr><td>Labium majus pudendi</td><td>Scrotum</td></tr>
+<tr><td>Klitoris</td><td>Penis corpus cavernosum</td></tr>
+<tr><td>Bulbus vestibuli</td><td>Corpus spongiosum</td></tr>
+<tr><td>Gl. vestibularis majores (Bartholin)</td><td>Gl. bulbourethralis (Cowper)</td></tr>
+</table>
+
+<h3 class="alt">Uterus</h3>
+<p><strong>Bölümleri:</strong> Fundus → Korpus → İsthmus → Serviks (Portio supravaginalis + Portio vaginalis)</p>
+<p>Portio vaginalis vagina içine invajinasyon gösterir — buraya ectocervix denir.</p>
+</div>
+  </div>
+</div>
+<script>
+function goster(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.getElementById('m-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+goster('noro');
+// Hash navigasyonu
+if(location.hash){try{goster(location.hash.slice(1))}catch(e){}}
+</script>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Fizyoloji — Ders Notları</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--card:#1a1d27;--card2:#20243a;--border:#2a2d3a;--text:#e8eaf0;--muted:#8b8fa8;--accent:#4f8ef7;--green:#1D9E75;--orange:#EF9F27;--red:#e74c3c}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+nav{display:flex;gap:8px;padding:.875rem 1.25rem;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap}
+nav h1{font-size:.95rem;font-weight:700;margin-right:auto}
+nav a{color:var(--muted);text-decoration:none;font-size:.82rem;padding:5px 10px;border-radius:7px;transition:.15s}
+nav a:hover,nav a.active{color:var(--text);background:var(--card2)}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 48px)}
+.sidebar{border-right:1px solid var(--border);padding:1.25rem;position:sticky;top:0;height:calc(100vh - 48px);overflow-y:auto}
+.sidebar h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.75rem;font-weight:600}
+.menu-item{display:block;padding:8px 12px;border-radius:9px;font-size:.83rem;color:var(--muted);text-decoration:none;margin-bottom:2px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:.15s}
+.menu-item:hover,.menu-item.active{background:var(--card2);color:var(--text)}
+.menu-item.active{color:var(--accent);font-weight:500}
+.content{padding:2rem 2.5rem;max-width:740px}
+.section{display:none}
+.section.active{display:block}
+h1.ders-baslik{font-size:1.6rem;font-weight:700;margin-bottom:.4rem}
+.ders-meta{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+h2.bolum{font-size:1.15rem;font-weight:700;color:var(--text);margin:2rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+h3.alt{font-size:1rem;font-weight:600;color:var(--accent);margin:1.5rem 0 .6rem}
+p{font-size:.9rem;line-height:1.75;color:#c8cad8;margin-bottom:.75rem}
+ul,ol{padding-left:1.4rem;margin-bottom:.75rem}
+li{font-size:.9rem;line-height:1.7;color:#c8cad8;margin-bottom:.15rem}
+li strong{color:var(--text)}
+.sinav-kutu{background:rgba(239,159,39,.08);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#f0d090}
+.sinav-kutu strong{color:var(--orange);font-weight:600}
+.onemli{background:rgba(29,158,117,.08);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#a8f0d8}
+.onemli strong{color:var(--green)}
+.uyari{background:rgba(231,76,60,.08);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#f5a49a}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.83rem}
+th{background:var(--card2);padding:8px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--border);color:var(--text)}
+td{padding:7px 12px;border-bottom:1px solid var(--border);color:#c8cad8;vertical-align:top;line-height:1.5}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.tag{display:inline-block;font-size:.68rem;padding:2px 8px;border-radius:20px;font-weight:600;margin-right:4px}
+@media(max-width:640px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:.75rem 1rem}
+  .sidebar h2{display:none}
+  .menu-wrap{display:flex;gap:4px;flex-wrap:wrap}
+  .menu-item{width:auto;display:inline-block}
+  .content{padding:1.25rem}
+}
+</style>
+
+</head>
+<body>
+<nav>
+  <h1>📚 ÇÜTF Dönem 2</h1>
+  <a href="index.html">Ana Sayfa</a>
+  <a href="dersler.html">Ders Notları</a>
+  <a href="cikmistar.html">Çıkmış Sorular</a>
+</nav>
+<div class="layout">
+  <div class="sidebar">
+    <h2>🫀 Fizyoloji</h2>
+    <div class="menu-wrap">
+<button class="menu-item" id="m-gis" onclick="goster('gis')">🍽️ GİS</button>
+<button class="menu-item" id="m-kvs" onclick="goster('kvs')">🫀 KVS</button>
+<button class="menu-item" id="m-noro" onclick="goster('noro')">🧠 Nöro</button>
+<button class="menu-item" id="m-endokrin" onclick="goster('endokrin')">💉 Endokrin</button>
+<button class="menu-item" id="m-solunum" onclick="goster('solunum')">💨 Solunum</button>
+<button class="menu-item" id="m-bobrek" onclick="goster('bobrek')">🫘 Böbrek</button>
+<button class="menu-item" id="m-ureme" onclick="goster('ureme')">🔄 Üreme</button>
+    </div>
+  </div>
+  <div class="content">
+<div class="section" id="s-gis">
+<h1 class="ders-baslik">🫀 Fizyoloji</h1>
+<p class="ders-meta">7 bölüm · Sınava çıkan tekrar eden sorular vurgulanmıştır</p>
+
+<h2 class="bolum">GİS Fizyolojisi</h2>
+
+<h3 class="alt">Motilite ve Peristaltizm</h3>
+<p>GİS'in hareketi iki sinir sistemi tarafından kontrol edilir:</p>
+<ul>
+<li><strong>Miyenterik pleksus (Auerbach)</strong> — kas tabakasında, motiliteyi kontrol eder</li>
+<li><strong>Submukozal pleksus (Meissner)</strong> — mukoza altında, sekresyonu kontrol eder</li>
+</ul>
+<p>Peristaltizm: Lokusun arkasından kasılma, önünden gevşeme. Sempatik motiliteyi <strong>yavaşlatır</strong>, parasempatik (vagus) <strong>hızlandırır</strong>.</p>
+
+<h3 class="alt">Göç Eden Motor Kompleks (MMC)</h3>
+<p>Aç karnına çalışan temizlik dalgası. Mide ve ince bağırsakta artıkları, bakterileri kalın bağırsağa süpürür.</p>
+<ul>
+<li><strong>Faz 1:</strong> Sessizlik — en uzun faz</li>
+<li><strong>Faz 2:</strong> Düzensiz kasılmalar</li>
+<li><strong>Faz 3:</strong> Güçlü düzenli kasılmalar — asıl temizlik burada</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> Göç eden motor kompleksi başlatan hormon → <strong>MOTİLİN</strong>. Yemekle durur, aç karnına çalışır.</div>
+
+<h3 class="alt">Gastrokolik Refleks</h3>
+<p>Mideye yemek girer → sinirsel yolla kolon harekete geçer → dışkılama isteği. Asıl mekanizma sinirseldir (vagus). CCK destekler ama başlatan değildir.</p>
+
+<h3 class="alt">Mide Hücreleri ve Salgıları</h3>
+<table>
+<tr><th>Hücre</th><th>Salgısı</th><th>Görevi</th></tr>
+<tr><td>Pariyetal hücre</td><td>HCl + İntrinsik faktör</td><td>Asit üretimi, B12 emilimi için İF şart</td></tr>
+<tr><td>Baş hücre (zimojenik)</td><td>Pepsinojen</td><td>Asitle aktive → pepsin → protein sindirimi</td></tr>
+<tr><td>G hücresi</td><td>Gastrin</td><td>Asit salgısını uyarır (antrum'da)</td></tr>
+<tr><td>D hücresi</td><td>Somatostatin</td><td>Gastrin ve asit salgısını baskılar</td></tr>
+<tr><td>ECL hücresi</td><td>Histamin</td><td>H2 reseptör üzerinden asit artırır</td></tr>
+<tr><td>Müköz hücre</td><td>Müküs + HCO3-</td><td>Mide duvarını asitten korur</td></tr>
+</table>
+
+<h3 class="alt">Asit Salgısının Üç Ayağı</h3>
+<ol>
+<li><strong>Gastrin</strong> → pariyetal hücre gastrin reseptörü + ECL hücresi üzerinden histamin</li>
+<li><strong>Histamin</strong> → H2 reseptörü → cAMP ↑ → proton pompası (en güçlü yol)</li>
+<li><strong>Asetilkolin (vagus)</strong> → M3 reseptörü → asit ↑ (sefalik fazda baskın)</li>
+</ol>
+<div class="onemli"><strong>Hatırla:</strong> Proton pompası inhibitörleri (omeprazol) üç yolu da aşarak pompayı direkt bloke eder. H2 blokerleri sadece histamin yolunu keser.</div>
+
+<h3 class="alt">Gastrin</h3>
+<ul>
+<li><strong>Artıranlar:</strong> Protein/amino asit mideye gelmesi, antrum gerilmesi, vagus, antrum pH'ının yükselmesi</li>
+<li><strong>Azaltanlar:</strong> Düşük antrum pH'ı (negatif geri bildirim), somatostatin, sekretin, GİP</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Uzun süreli antiasit ile pH 7.0'de tutulursa gastrin ne olur? → <strong>ARTAR</strong>. Düşük pH'ın baskılayıcı etkisi kalkar.</div>
+
+<h3 class="alt">Mide Boşalması</h3>
+<p><strong>Hızlandıranlar:</strong> İntragastrik hacim artışı, sıvı içerik</p>
+<p><strong>Yavaşlatanlar:</strong> Duodenuma yağ gelmesi (en güçlü), asit, yüksek osmolarite, CCK, sekretin, GİP</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Mide boşalma hızını etkilemeyen → <strong>Gastrik karbonhidratlar</strong>.</div>
+
+<h3 class="alt">Pankreas Ekzokrin Sekresyonu</h3>
+<ul>
+<li><strong>Asiner hücreler</strong> → enzim (CCK uyarır)</li>
+<li><strong>Duktal epitel hücreleri</strong> → HCO3- zengin sıvı (Sekretin uyarır)</li>
+</ul>
+<p>Enzimler inaktif (zimogen) salgılanır. Enterokinaz tripsinojen'i tripsine çevirir → tripsin diğerlerini aktive eder.</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Vagotomi yemek sonrası enzim salgısını artırır → <strong>YANLIŞ</strong>. Vagus kesilince enzim AZALIR.</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Steatoz için hem pankreatik hem safra yetersizliği gereklidir → <strong>YANLIŞ</strong>. Biri yeterli.</div>
+
+<h3 class="alt">Bilirubin</h3>
+<table>
+<tr><th>Durum</th><th>Nonkonjuge</th><th>Konjuge</th></tr>
+<tr><td>Ana safra kanalı tıkanması</td><td>Değişmez</td><td><strong>ARTAR</strong> (kana geri sızar)</td></tr>
+<tr><td>Hemolitik anemi</td><td><strong>ARTAR</strong></td><td>Değişmez</td></tr>
+</table>
+
+<h3 class="alt">GİS Hormonları Özeti</h3>
+<table>
+<tr><th>Hormon</th><th>Kaynağı</th><th>Uyaran</th><th>Ana Etki</th></tr>
+<tr><td>Gastrin</td><td>Antrum G hücresi</td><td>Protein, vagus, yüksek pH</td><td>Asit ↑, motilite ↑</td></tr>
+<tr><td>Sekretin</td><td>Duodenum S hücresi</td><td>Asit gelmesi</td><td>HCO3- ↑, asit ↓</td></tr>
+<tr><td>CCK</td><td>Duodenum I hücresi</td><td>Yağ + protein</td><td>Enzim ↑, safra boşaltır, boşalma ↓</td></tr>
+<tr><td>GİP</td><td>Duodenum K hücresi</td><td>Yağ + karbonhidrat</td><td>Asit ↓, insülin uyarır (inkretin)</td></tr>
+<tr><td>Motilin</td><td>İnce bağırsak</td><td>Aç karnına</td><td>MMC Faz 3 başlatır</td></tr>
+<tr><td>Somatostatin</td><td>D hücresi</td><td>Aşırı salgı</td><td>Her şeyi baskılar</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> İştah düzenlemesinde nöromediatör değil → <strong>CCK</strong>. NPY, AgRP, POMC, CART hipotalamusta nöromediatör.</div>
+</div>
+<div class="section" id="s-kvs">
+<h2 class="bolum">Kardiyovasküler Fizyoloji</h2>
+
+<h3 class="alt">Aksiyon Potansiyelleri</h3>
+<table>
+<tr><th>Özellik</th><th>Hızlı Yanıt AP (Ventriküler)</th><th>Yavaş Yanıt AP (SA/AV düğümü)</th></tr>
+<tr><td>Faz 0 sorumlu iyon</td><td><strong>Na+</strong> (voltaja duyarlı)</td><td><strong>Ca2+</strong> (L-tipi)</td></tr>
+<tr><td>İstirahat potansiyeli</td><td>-90 mV</td><td>-60 mV</td></tr>
+<tr><td>Faz 4</td><td>Stabil</td><td>Stabil değil (pacemaker)</td></tr>
+<tr><td>Pik değer</td><td>+30 mV</td><td>+10 mV (az geçer)</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> Yavaş yanıt AP'de Faz 0'dan Na+ değil <strong>Ca2+</strong> sorumludur.</div>
+
+<h3 class="alt">EKG</h3>
+<table>
+<tr><th>Dalga</th><th>Anlamı</th><th>Not</th></tr>
+<tr><td>P dalgası</td><td>Atriyal depolarizasyon</td><td>&lt; 0.12 sn</td></tr>
+<tr><td>PR aralığı</td><td>AV geçiş süresi</td><td>0.12-0.20 sn</td></tr>
+<tr><td>QRS kompleksi</td><td>Ventriküler depolarizasyon</td><td>&lt; 0.12 sn</td></tr>
+<tr><td>QT aralığı</td><td>Ventriküler AP toplam süresi</td><td>&lt; 0.44 sn</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV:</strong> EKG ile ulaşılamayan → <strong>Ejeksiyon fraksiyonu</strong> (buna ekokardiyografi lazım).</div>
+
+<h3 class="alt">Kardiyak Döngü</h3>
+<ul>
+<li><strong>İzovolumetrik kontraksiyon:</strong> Mitral kapak kapanır (1. kalp sesi), aort henüz açılmamış</li>
+<li><strong>Ejeksiyon:</strong> Aort kapağı açılır, kan pompalanır</li>
+<li><strong>İzovolumetrik relaksasyon:</strong> Aort kapağı kapanır (2. kalp sesi), mitral henüz açılmamış</li>
+<li><strong>Hızlı dolum:</strong> Mitral açılır, kan ventriküle girer</li>
+</ul>
+
+<h3 class="alt">Frank-Starling ve Ön Yük</h3>
+<p>Ön yük ↑ → EDV ↑ → miyokard gerilir → kasılma gücü ↑ → atım hacmi ↑ → ESV aynı kalır veya ↓</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> Artmış ön yükle uyumlu OLMAYAN → "Sistol sonu hacim artar" → <strong>YANLIŞ</strong>. ESV artmaz.</div>
+
+<h3 class="alt">Sempatik ve Parasempatik — Kalp</h3>
+<table>
+<tr><th>Etki</th><th>Sempatik (β1)</th><th>Parasempatik (M2)</th></tr>
+<tr><td>Kalp hızı</td><td>Artar</td><td>Azalır</td></tr>
+<tr><td>Kasılma gücü</td><td>Artar</td><td>Azalır</td></tr>
+<tr><td>Ca2+ girişi</td><td><strong>ARTAR</strong></td><td>Azalır</td></tr>
+<tr><td>Sistol süresi</td><td>Kısalır</td><td>Uzar</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> Sempatik uyarıyla uyumlu OLMAYAN → "Ca2+ girişini baskılar" → <strong>YANLIŞ</strong>. β1 → cAMP → PKA → L-tip Ca kanal fosforilasyonu → Ca2+ ARTAR.</div>
+
+<h3 class="alt">Venöz Sistem</h3>
+<ul>
+<li>Venöz kompliyans > arteriyel kompliyans</li>
+<li>Toplam kanın %65-70'i venöz sistemde</li>
+<li>Venöz tonus ↑ → venler sıkışır → kanı kalbe iter → venöz dönüş <strong>ARTAR</strong></li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> Venöz tonus artınca venöz dönüş azalır → <strong>YANLIŞ</strong>. ARTAR.</div>
+
+<h3 class="alt">Kan Basıncı</h3>
+<p>Kan basıncı = Kalp debisi × Total periferik direnç</p>
+<p>Nabız basıncı = Sistolik - Diyastolik. Yaşlılıkta artma nedeni: <strong>damar kompliyansının azalması</strong>.</p>
+<div class="onemli"><strong>Önemli:</strong> Arteriollerde direnç artarsa kapiller hidrostatik basınç AZALIR (kapillere daha az kan gider). Bunu karıştırma.</div>
+</div>
+<div class="section" id="s-noro">
+<h2 class="bolum">Nörofizyoloji ve Duyu</h2>
+
+<h3 class="alt">Motor Sistem</h3>
+<ul>
+<li><strong>Alfa motor nöronlar:</strong> Ekstrafuzal kas liflerini innerve eder → kasın kasılmasını sağlar</li>
+<li><strong>Gama motor nöronlar:</strong> İntrafuzal kas liflerini innerve eder → kas iğciği duyarlılığını ayarlar</li>
+<li><strong>Renshaw hücresi:</strong> Alfa motor nöron tarafından uyarılır, tekrar alfa motor nöronu inhibe eder → negatif geri bildirim</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV:</strong> Spinal motor nöronlarda negatif geri bildirim inhibisyon → <strong>Renshaw hücresi</strong>.</div>
+
+<h3 class="alt">Uyku Evreleri</h3>
+<table>
+<tr><th>Evre</th><th>EEG</th><th>EMG</th><th>Özellik</th></tr>
+<tr><td>NREM N1</td><td>Teta</td><td>Düşük</td><td>Uykuya dalma</td></tr>
+<tr><td>NREM N2</td><td>Uyku mili + K kompleksi</td><td>Düşük</td><td>Hafif uyku</td></tr>
+<tr><td>NREM N3 (Derin)</td><td>Delta (yavaş, yüksek amp)</td><td>Çok düşük</td><td>Derin uyku, büyüme hormonu</td></tr>
+<tr><td>REM</td><td>Düşük voltaj, karışık frekans</td><td>Yok/çok düşük</td><td>Rüya, hızlı göz hareketi</td></tr>
+</table>
+
+<h3 class="alt">Benzodiazepinler ve GABA</h3>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Benzodiazepinler için bağlanma bölgesi bulunan reseptör → <strong>GABA-A / GABA</strong>. Kanalın açık kalma frekansını artırır.</div>
+
+<h3 class="alt">Prefrontal Korteks Lezyonu</h3>
+<p>Prefrontal lezyonda: Karmaşık problem çözemez, ahlaksal değer kaybı, iş planlanamaz, dikkat dağınıklığı.</p>
+<div class="uyari"><strong>Dikkat:</strong> Göremez/konuşamaz değildir — o Broca/Wernicke alanı hasarıdır.</div>
+
+<h3 class="alt">Otonom Sinir Sistemi</h3>
+<ul>
+<li>Pregangliyonik her iki sistemde: <strong>Asetilkolin (nikotinik)</strong></li>
+<li>Postgangliyonik sempatik: <strong>Noradrenalin (adrenerjik)</strong> — İSTİSNA: ter bezi muskarinik!</li>
+<li>Postgangliyonik parasempatik: <strong>Asetilkolin (muskarinik)</strong></li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> Sadece pregangliyonik sempatik liflerle innerve edilen → <strong>Adrenal medulla</strong>.</div>
+</div>
+<div class="section" id="s-endokrin">
+<h2 class="bolum">Endokrin ve Metabolizma</h2>
+
+<h3 class="alt">Hormona Duyarlı Lipaz (HSL)</h3>
+<p>Adipoz dokuda trigliseritleri yıkan enzim. Aktive olunca yağ asitleri kana geçer.</p>
+<ul>
+<li><strong>Aktive edenler:</strong> Epinefrin, norepinefrin, kortizol, büyüme hormonu, glukagon → hepsi cAMP yolu</li>
+<li><strong>İnhibe eden:</strong> İnsülin → cAMP ↓ → PKA inaktif → HSL fosforile olamaz</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> HSL üzerine etkisi farklı olan → <strong>İnsülin</strong>. Diğerleri yak, insülin biriktir.</div>
+
+<h3 class="alt">Leptin</h3>
+<p>Adipoz dokudan salgılanır, tokluğu bildirir.</p>
+<ul>
+<li>POMC nöronlarını <strong>aktive</strong> eder → tokluk</li>
+<li>NPY/AgRP nöronlarını <strong>baskılar</strong> → iştah azalır</li>
+<li>Kahverengi yağ dokusunu aktive eder → termogenez ↑</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> Leptinin etkileriyle uyumlu olan → <strong>POMC yapımını uyarır</strong>.</div>
+
+<h3 class="alt">GLUT Taşıyıcıları</h3>
+<table>
+<tr><th>GLUT</th><th>Bulunduğu Yer</th><th>Özellik</th></tr>
+<tr><td>GLUT1</td><td>Beyin, eritrosit</td><td>Bazal glikoz alımı</td></tr>
+<tr><td>GLUT2</td><td>Karaciğer, pankreas β</td><td>Düşük afinite, sensör</td></tr>
+<tr><td>GLUT3</td><td>Nöronlar</td><td>En yüksek afinite</td></tr>
+<tr><td>GLUT4</td><td>İskelet kası, adipoz</td><td><strong>İnsülin bağımlı!</strong></td></tr>
+<tr><td>GLUT5</td><td>İnce barsak</td><td>Fruktoz emilimi</td></tr>
+</table>
+
+<h3 class="alt">ADH Fizyolojisi</h3>
+<ul>
+<li>Supraoptik + Paraventriküler çekirdeklerde sentezlenir, nörohipofizde salgılanır</li>
+<li>Plazma ozmolalitesi ↑ → ozmoreseptörler → ADH ↑</li>
+<li>Toplayıcı tüpte V2 reseptörü → aquaporin-2 → su geri emilimi ↑</li>
+</ul>
+
+<h3 class="alt">D Vitamini Sentez Sırası</h3>
+<p><strong>Deri</strong> (UV → kolekalsiferol) → <strong>Karaciğer</strong> (25-hidroksilasyon) → <strong>Böbrek</strong> (1α-hidroksilasyon → aktif kalsitriol)</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Aktif D vitamini sentez sırası → <strong>Deri → Karaciğer → Böbrek</strong>.</div>
+
+<h3 class="alt">Adrenal Bez Bölgeleri</h3>
+<table>
+<tr><th>Bölge</th><th>Hormon</th><th>Kontrol</th></tr>
+<tr><td>Zona glomeruloza</td><td>Aldosteron</td><td>Anjiotensin II, K+</td></tr>
+<tr><td>Zona fasikülatata</td><td>Kortizol</td><td>ACTH</td></tr>
+<tr><td>Zona retiküleris</td><td>Androjenler (DHEA)</td><td>ACTH</td></tr>
+<tr><td>Medulla</td><td>Adrenalin (%80) + Noradrenalin</td><td>Sempatik pregangliyonik</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV:</strong> Aldosteron salgısının artması → <strong>Hipovolemi</strong> (RAAS → anjiotensin II → aldosteron). ACE inhibitörleri aldosteronu AZALTIR.</div>
+</div>
+<div class="section" id="s-solunum">
+<h2 class="bolum">Solunum Fizyolojisi</h2>
+
+<h3 class="alt">Akciğer Hacimleri</h3>
+<table>
+<tr><th>Parametre</th><th>Tanım</th><th>Spirometre ile?</th></tr>
+<tr><td>TV (500 mL)</td><td>Normal nefes hacmi</td><td>✅ Evet</td></tr>
+<tr><td>IRV (3000 mL)</td><td>Max inspirasyon sonrası ek hacim</td><td>✅ Evet</td></tr>
+<tr><td>ERV (1100 mL)</td><td>Max ekspirasyon sonrası ek hacim</td><td>✅ Evet</td></tr>
+<tr><td>RV (1200 mL)</td><td>Max ekspirasyondan sonra kalan</td><td>❌ Hayır</td></tr>
+<tr><td>FRC = ERV + RV</td><td>Fonksiyonel rezidüel kapasite</td><td>❌ Hayır (RV içeriyor)</td></tr>
+<tr><td>TLC = VC + RV</td><td>Total akciğer kapasitesi</td><td>❌ Hayır (RV içeriyor)</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Basit spirometre ile değerlendirilemez → <strong>Alveoler ventilasyon</strong> (ve RV içeren kapasiteler: FRC, TLC).</div>
+
+<h3 class="alt">Pnömotoraks</h3>
+<p>Plevra boşluğuna hava girer → intraplevral basınç atmosferik olur → negatif basınç kaybolur → akciğerler kendi elastik geri çekimleriyle küçülür.</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Pnömotoraksa bağlı akciğer küçülmesinin nedeni → <strong>Negatif intraplevral basıncın kaybolmasına bağlı toraksın çekim etkisinin kaybolması</strong>.</div>
+
+<h3 class="alt">Kan Gazı Yorumlama</h3>
+<p>Normal: pH 7.35-7.45, PaCO2 35-45, HCO3- 22-26</p>
+<ol>
+<li>pH'a bak: &lt; 7.35 asidoz, &gt; 7.45 alkaloz</li>
+<li>PaCO2: yüksekse solunum asidozu, düşükse solunum alkaloz</li>
+<li>HCO3-: yüksekse metabolik alkaloz, düşükse metabolik asidoz</li>
+</ol>
+</div>
+<div class="section" id="s-bobrek">
+<h2 class="bolum">Böbrek ve Asit-Baz Fizyolojisi</h2>
+
+<h3 class="alt">Glomerüler Filtrasyon (GFR)</h3>
+<p><strong>GFR artıranlar:</strong> Afferent arteryol dilatasyonu, efferent konstrüksiyon, yüksek protein alımı (TGF)</p>
+<p><strong>GFR azaltanlar:</strong> Afferent konstrüksiyon, efferent dilatasyon, Bowman kapsülü basıncı artışı</p>
+<p><strong>Klirens:</strong> İnülin klirensi = GFR. PAH klirensi = eRPF</p>
+
+<h3 class="alt">Tübüler Fonksiyonlar</h3>
+<ul>
+<li><strong>Proksimal tübül:</strong> Glikoz, amino asit, Na, HCO3- büyük çoğunluğu geri emilir</li>
+<li><strong>Henle'nin inen ince bacağı:</strong> Suya geçirgen, aquaporin-1 var, ADH'dan bağımsız</li>
+<li><strong>Henle'nin çıkan kalın bacağı:</strong> Tuza geçirgen, suya değil, NKCC2 taşıyıcısı (furosemid burada)</li>
+<li><strong>Toplayıcı tübül:</strong> ADH → V2 → aquaporin-2 → su emilimi. Aldosteron → ENaC → Na emilimi</li>
+</ul>
+
+<h3 class="alt">K+ Hücre İçi-Dışı Kayması</h3>
+<table>
+<tr><th>K+'u İçeri Çekenler</th><th>K+'u Dışarı İtenler</th></tr>
+<tr><td>İnsülin (Na-K ATPaz ↑)</td><td>Diabetes mellitus (insülin yok)</td></tr>
+<tr><td>Beta adrenerjik (Na-K ATPaz ↑)</td><td>Hücre dışı ozmolarite artışı</td></tr>
+<tr><td>Alkaloz</td><td>Asidoz</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> K+'u hücre DIŞINA kaydıran → <strong>Diabetes mellitus + ozmolarite artışı</strong>. İnsülin ve beta adrenerjik İÇERİ çeker.</div>
+</div>
+<div class="section" id="s-ureme">
+<h2 class="bolum">Üreme Fizyolojisi</h2>
+
+<h3 class="alt">Menstrüel Siklus</h3>
+<ul>
+<li><strong>Foliküler faz (1-13. gün):</strong> FSH ↑ → folikül gelişir → östrojen ↑ → LH surge uyarısı</li>
+<li><strong>Ovulasyon (14. gün):</strong> LH surge → folikül patlar</li>
+<li><strong>Lüteal faz (15-28. gün):</strong> Korpus luteum → progesteron + östrojen üretir</li>
+</ul>
+<p><strong>19. günde:</strong> Östrojen ↑, Progesteron ↑, FSH ↓, LH ↓, İnhibin ↓</p>
+
+<h3 class="alt">Seminifer Tübül Atrofisi</h3>
+<ul>
+<li>Sertoli hücresi hasarı → inhibin ↓ → FSH ↑</li>
+<li>Leydig hücresi sağlamsa → testosteron normal → LH normal</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (3 yılda tekrar):</strong> Seminifer tübül atrofisinde → <strong>FSH ↑, LH normal, Testosteron normal, İnhibin ↓</strong>.</div>
+
+<h3 class="alt">Oksitosin</h3>
+<ul>
+<li>Supraoptik + Paraventriküler çekirdeklerde üretilir</li>
+<li>Salgısının en güçlü uyaranı: <strong>Serviksin dilatasyonu</strong> (Ferguson refleksi)</li>
+<li>Görevi: Uterus kasılması (doğum) + süt ejeksiyonu</li>
+</ul>
+<div class="onemli"><strong>Hatırla:</strong> Prolaktin süt <strong>üretir</strong>. Oksitosin süt <strong>ejekte eder</strong>. Bunlar farklı!</div>
+</div>
+  </div>
+</div>
+<script>
+function goster(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.getElementById('m-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+goster('gis');
+// Hash navigasyonu
+if(location.hash){try{goster(location.hash.slice(1))}catch(e){}}
+</script>
+</body>
+</html>

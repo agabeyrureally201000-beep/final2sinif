@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Farmakoloji — Ders Notları</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--card:#1a1d27;--card2:#20243a;--border:#2a2d3a;--text:#e8eaf0;--muted:#8b8fa8;--accent:#4f8ef7;--green:#1D9E75;--orange:#EF9F27;--red:#e74c3c}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+nav{display:flex;gap:8px;padding:.875rem 1.25rem;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap}
+nav h1{font-size:.95rem;font-weight:700;margin-right:auto}
+nav a{color:var(--muted);text-decoration:none;font-size:.82rem;padding:5px 10px;border-radius:7px;transition:.15s}
+nav a:hover,nav a.active{color:var(--text);background:var(--card2)}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 48px)}
+.sidebar{border-right:1px solid var(--border);padding:1.25rem;position:sticky;top:0;height:calc(100vh - 48px);overflow-y:auto}
+.sidebar h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.75rem;font-weight:600}
+.menu-item{display:block;padding:8px 12px;border-radius:9px;font-size:.83rem;color:var(--muted);text-decoration:none;margin-bottom:2px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:.15s}
+.menu-item:hover,.menu-item.active{background:var(--card2);color:var(--text)}
+.menu-item.active{color:var(--accent);font-weight:500}
+.content{padding:2rem 2.5rem;max-width:740px}
+.section{display:none}
+.section.active{display:block}
+h1.ders-baslik{font-size:1.6rem;font-weight:700;margin-bottom:.4rem}
+.ders-meta{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+h2.bolum{font-size:1.15rem;font-weight:700;color:var(--text);margin:2rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+h3.alt{font-size:1rem;font-weight:600;color:var(--accent);margin:1.5rem 0 .6rem}
+p{font-size:.9rem;line-height:1.75;color:#c8cad8;margin-bottom:.75rem}
+ul,ol{padding-left:1.4rem;margin-bottom:.75rem}
+li{font-size:.9rem;line-height:1.7;color:#c8cad8;margin-bottom:.15rem}
+li strong{color:var(--text)}
+.sinav-kutu{background:rgba(239,159,39,.08);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#f0d090}
+.sinav-kutu strong{color:var(--orange);font-weight:600}
+.onemli{background:rgba(29,158,117,.08);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#a8f0d8}
+.onemli strong{color:var(--green)}
+.uyari{background:rgba(231,76,60,.08);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#f5a49a}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.83rem}
+th{background:var(--card2);padding:8px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--border);color:var(--text)}
+td{padding:7px 12px;border-bottom:1px solid var(--border);color:#c8cad8;vertical-align:top;line-height:1.5}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.tag{display:inline-block;font-size:.68rem;padding:2px 8px;border-radius:20px;font-weight:600;margin-right:4px}
+@media(max-width:640px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:.75rem 1rem}
+  .sidebar h2{display:none}
+  .menu-wrap{display:flex;gap:4px;flex-wrap:wrap}
+  .menu-item{width:auto;display:inline-block}
+  .content{padding:1.25rem}
+}
+</style>
+
+</head>
+<body>
+<nav>
+  <h1>📚 ÇÜTF Dönem 2</h1>
+  <a href="index.html">Ana Sayfa</a>
+  <a href="dersler.html">Ders Notları</a>
+  <a href="cikmistar.html">Çıkmış Sorular</a>
+</nav>
+<div class="layout">
+  <div class="sidebar">
+    <h2>💊 Farmakoloji</h2>
+    <div class="menu-wrap">
+<button class="menu-item" id="m-fdin" onclick="goster('fdin')">⚗️ Farmakodinamik</button>
+<button class="menu-item" id="m-fkin" onclick="goster('fkin')">📊 Farmakokinetik</button>
+<button class="menu-item" id="m-toks" onclick="goster('toks')">☠️ Toksikoloji</button>
+<button class="menu-item" id="m-genetik" onclick="goster('genetik')">🧬 Genetik</button>
+<button class="menu-item" id="m-cesitli" onclick="goster('cesitli')">💉 Çeşitli</button>
+    </div>
+  </div>
+  <div class="content">
+<div class="section" id="s-fdin">
+<h1 class="ders-baslik">💊 Farmakoloji</h1>
+<p class="ders-meta">5 bölüm · Tekrar oranı %60+ — dar havuz, aynı sorular döner</p>
+
+<h2 class="bolum">Farmakodinamik</h2>
+
+<h3 class="alt">Reseptör Tipleri</h3>
+<table>
+<tr><th>Tip</th><th>Mekanizma</th><th>Örnekler</th></tr>
+<tr><td>Tip 1 — İyonotropik</td><td>Direkt iyon kanalı açar</td><td>Nikotinik ACh, GABA-A, NMDA, AMPA</td></tr>
+<tr><td>Tip 2 — G protein</td><td>G protein → ikinci haberci</td><td>Muskarinik, adrenerjik, opioid, glukagon</td></tr>
+<tr><td>Tip 3 — Tirozin kinaz</td><td>Otofosforilasyon → kinaz</td><td>İnsülin, EGF, IGF</td></tr>
+<tr><td>Tip 4 — Nükleer</td><td>DNA transkripsiyon faktörü</td><td>Steroidler, tiroit hormonu, D vitamini</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> Kolinerjik nikotinik reseptörlerin dahil olduğu reseptör tipi → <strong>İyonotropik reseptörler</strong>.</div>
+
+<h3 class="alt">G Protein Eşlenik Reseptörler</h3>
+<table>
+<tr><th>G Protein</th><th>İkinci Haberci</th><th>Reseptör Örnekleri</th></tr>
+<tr><td>Gs</td><td>cAMP artar</td><td>β1, β2, D1, H2, glukagon, TSH</td></tr>
+<tr><td>Gi</td><td>cAMP azalır</td><td>α2, M2, D2, opioid, somatostatin</td></tr>
+<tr><td>Gq</td><td>IP3 + DAG → Ca artar</td><td>α1, M1, M3, H1, angiotensin II</td></tr>
+</table>
+
+<h3 class="alt">Antagonizma Türleri</h3>
+<table>
+<tr><th>Tür</th><th>Tanım</th><th>Doz artışıyla aşılır mı?</th><th>Örnek</th></tr>
+<tr><td>Kompetitif</td><td>Aynı reseptörde yarışır, reversibl</td><td><strong>EVET</strong></td><td>Atropin-ACh, Propranolol-Adrenalin</td></tr>
+<tr><td>Non-kompetitif</td><td>Farklı bölgeye bağlanır, maksimum etkiyi azaltır</td><td><strong>HAYIR</strong></td><td>Fenoksibenzamin</td></tr>
+<tr><td>Kimyasal</td><td>İlaçlar kimyasal reaksiyona girer</td><td>Uygulanamaz</td><td>Protamin — Heparin</td></tr>
+<tr><td>Fizyolojik</td><td>Farklı reseptör, farklı mekanizma, zıt etki</td><td>Uygulanamaz</td><td>Nitratlar — Fenilefrin</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Farklı reseptör + zıt etki → <strong>Fizyolojik antagonizma</strong>. Örnek: Nitratlar (vazodilatör) — Fenilefrin (vazokonstriktör).</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Non-kompetitif antagonizmada agonist dozunu artırırsan maksimum etki elde edilir → <strong>YANLIŞ</strong>. Non-kompetitifde maksimum etki kalıcı olarak düşer.</div>
+
+<h3 class="alt">Agonist — Parsiyel Agonist — Antagonist</h3>
+<ul>
+<li><strong>Tam agonist:</strong> İntrinsik aktivite = 1</li>
+<li><strong>Parsiyel agonist:</strong> İntrinsik aktivite 0-1 arası</li>
+<li><strong>Antagonist:</strong> İntrinsik aktivite = 0</li>
+<li><strong>Ters agonist:</strong> İntrinsik aktivite &lt; 0</li>
+</ul>
+
+<h3 class="alt">Terapötik İndeks</h3>
+<p>TI = LD50 / ED50</p>
+<div class="uyari"><strong>Dar TI ilaçlar (toksik-terapötik doz yakın):</strong> Warfarin, Digoksin, Lityum, Teofilin, Fenitoin, Siklosporin, Aminoglikozitler, Vankomisin</div>
+</div>
+<div class="section" id="s-fkin">
+<h2 class="bolum">Farmakokinetik (ADME)</h2>
+
+<h3 class="alt">Absorbsiyon</h3>
+<p>Oral yolun dezavantajı: <strong>First-pass etkisi</strong> — karaciğerden yüksek oranda yıkılma.</p>
+<p>İnhalasyonun hızlı etki nedenleri: Geniş yüzey alanı, yoğun kanlanma, first-pass yok.</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> İnhalasyonda hızlı etkiye en az katkı sağlayan → <strong>Akciğer epitelinin kalınlığı</strong>.</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2023-24):</strong> Absorbsiyon düzeyinde etkileşim DEĞİLDİR → <strong>Bir ilacın biyotransformasyonunun başka ilaç tarafından engellenmesi</strong> (bu metabolizma düzeyi).</div>
+
+<h3 class="alt">Sanal Dağılım Hacmi (Vd)</h3>
+<p>Vd = Vücuttaki toplam ilaç miktarı / Plazma konsantrasyonu</p>
+<table>
+<tr><th>Vd Değeri</th><th>Anlamı</th></tr>
+<tr><td>≈ 3-5 L</td><td>Sadece plazmada (büyük molekül, proteine bağlı)</td></tr>
+<tr><td>≈ 15 L</td><td>Plazma + interstisyel sıvı</td></tr>
+<tr><td>≈ 40 L</td><td>Tüm vücut sıvıları</td></tr>
+<tr><td>&gt; 100 L</td><td>Dokularda yoğun depolanma (lipofil)</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV:</strong> Vd hakkında YANLIŞ olan → "Non-iyonize olanlar sadece plazmada bulunur" → <strong>YANLIŞ</strong>. Non-iyonize (lipofilik) ilaçlar dokulara dağılır, büyük Vd.</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Etki gösteren ilaç kısmı → <strong>Plazmadaki serbest ilaç</strong>. Proteine bağlı ilaç inaktiftir.</div>
+
+<h3 class="alt">CYP450 — En Önemli Enzimler</h3>
+<table>
+<tr><th>Enzim</th><th>Önemli İlaçlar</th><th>Sınavda çıktı</th></tr>
+<tr><td><strong>CYP2D6</strong></td><td>Propranolol, kodein, TCA'lar</td><td><strong>2 yılda birebir (propranolol)</strong></td></tr>
+<tr><td><strong>CYP2C9</strong></td><td>Warfarin, fenitoin, ibuprofen</td><td><strong>2 yılda birebir (warfarin)</strong></td></tr>
+<tr><td>CYP3A4</td><td>Siklosporin, midazolam, simvastatin</td><td>Ketokonazol inhibitörü</td></tr>
+<tr><td>CYP2C19</td><td>Omeprazol, klopidogrel, diazepam</td><td>Klopidogrel aktivasyonu</td></tr>
+<tr><td>CYP1A2</td><td>Teofilin, kafein, klozapin</td><td>Sigara indükler</td></tr>
+</table>
+<div class="onemli">
+<strong>İndükleyiciler (enzim ↑ → ilaç etkisi ↓):</strong> Rifampisin (en güçlü), Fenitoin, Karbamazepin, Barbitüratlar, Sigara (CYP1A2)<br/>
+<strong>İnhibitörler (enzim ↓ → ilaç etkisi ↑ → toksisite riski):</strong> Ketokonazol, İtrakonazol, Eritromisin, Klaritromisin, Greyfurt suyu, Simetidin
+</div>
+
+<h3 class="alt">İlaç Atılımı</h3>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2022-23):</strong> İlaçların itrah hızını değiştirmez → <strong>Reseptör düzeyinde etkileşme</strong> (farmakodinamik olay, farmakokinetik değil).</div>
+</div>
+<div class="section" id="s-toks">
+<h2 class="bolum">Toksikoloji ve Antidotlar</h2>
+
+<h3 class="alt">Aktif Kömür</h3>
+<p>Geniş yüzeyli adsorban, ilaçları ve toksinleri bağlayarak emilimlerini önler.</p>
+<div class="onemli"><strong>Yararlı olduğu:</strong> Trisiklik antidepresanlar, Digoksin, Teofilin, Fenobarbital, Organik maddeler</div>
+<div class="uyari"><strong>Yararsız olduğu (bağlanmaz):</strong> Ağır metaller (kurşun, civa, arsenik, demir, lityum), Alkol, Asit, Baz, Siyanür</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Aktif kömür faydasız → <strong>Ağır metaller</strong>. Trisiklikler, digoksin, teofilin → yararlı.</div>
+
+<h3 class="alt">Antidot Tablosu — Ezber</h3>
+<table>
+<tr><th>Zehir</th><th>Antidot</th></tr>
+<tr><td>Opioidler (morfin, eroin)</td><td><strong>Naloksan</strong></td></tr>
+<tr><td>Benzodiazepinler</td><td><strong>Flumazenil</strong></td></tr>
+<tr><td>Organofosfatlar</td><td><strong>Atropin + Pralidoksim</strong></td></tr>
+<tr><td>Parasetamol</td><td><strong>N-asetilsistein (NAC)</strong></td></tr>
+<tr><td>Heparin</td><td><strong>Protamin sülfat</strong></td></tr>
+<tr><td>Warfarin</td><td><strong>K vitamini</strong></td></tr>
+<tr><td>Demir</td><td><strong>Deferoksamin</strong></td></tr>
+<tr><td>Nitritler (methemoglobinemi)</td><td><strong>Metilen mavisi</strong></td></tr>
+<tr><td>Beta blokörler</td><td><strong>Glukagon</strong></td></tr>
+<tr><td>Digoksin</td><td><strong>Anti-digoksin Fab antikoru</strong></td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2022-23):</strong> Nitrit zehirlenmesi antidotu → <strong>Metilen mavisi</strong>.</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> Parasetamol toksik metabolit → <strong>NAPQI (N-asetil-p-benzikinonimin)</strong>. Glutatyon tükenince birikir → karaciğer nekrozu. Tedavi: NAC.</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> Toksin-antidot yanlış eşleştirme → <strong>Demir — K vitamini</strong>. Demir'de deferoksamin kullanılır, K vitamini warfarin için.</div>
+</div>
+<div class="section" id="s-genetik">
+<h2 class="bolum">Genetik ve Tıbbi Biyoloji</h2>
+
+<h3 class="alt">Kalıtım Tipleri</h3>
+<table>
+<tr><th>Tip</th><th>Hastalık Örnekleri</th></tr>
+<tr><td>Otozomal dominant</td><td>Huntington, Marfan, NF1, Achondroplasia, Polipozis koli</td></tr>
+<tr><td>Otozomal resesif</td><td>Kistik fibrozis, Fenilketonüri, Tay-Sachs, Talasemi, Orak hücre</td></tr>
+<tr><td>X'e bağlı resesif</td><td>Hemofili A&B, DMD, G6PD eksikliği, Renk körlüğü</td></tr>
+<tr><td>Mitokondriyal</td><td>MELAS, MERRF, Leber optik nöropati — anneden tüm çocuklara</td></tr>
+</table>
+
+<h3 class="alt">Huntington ve Antisipasyon</h3>
+<p>Huntington: CAG trinükleotid tekrar artışı (kr. 4p). Otozomal dominant.</p>
+<p><strong>Antisipasyon:</strong> Her nesilde hastalığın daha erken ve daha şiddetli ortaya çıkması. Her kuşakta tekrar sayısı artar.</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2021-22):</strong> Huntington'da tekrar sayısı arttıkça daha erken ve şiddetli ortaya çıkması → <strong>Antisipasyon</strong>.</div>
+
+<h3 class="alt">Kromozomal Anomaliler</h3>
+<table>
+<tr><th>Sendrom</th><th>Karyotip</th><th>Özellik</th></tr>
+<tr><td>Down</td><td>Trizomi 21</td><td>En sık kr. anomali, mental retardasyon, kardiyak defekt</td></tr>
+<tr><td>Edwards</td><td>Trizomi 18</td><td><strong>3-4. parmaklar üst üste, sandal ayak</strong></td></tr>
+<tr><td>Patau</td><td>Trizomi 13</td><td>Yarık damak, polidaktili, holoprozensefali</td></tr>
+<tr><td>Turner</td><td>45, X0</td><td>Sadece kadın, kısa boy, gonadal disgenezi, aorta koarktasyonu</td></tr>
+<tr><td>Klinefelter</td><td>47, XXY</td><td>Sadece erkek, <strong>azoospermi, jinekomasti</strong> — en sık erkek infertilitesi</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2022-23):</strong> Azoospermiye bağlı erkek infertilitesi → <strong>Klinefelter (47, XXY)</strong>.</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> 3-4. parmaklar üst üste, sandal ayak → <strong>Trizomi 18 (Edwards sendromu)</strong>.</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2022-23):</strong> Akraba evliliğiyle sıklığı ARTMAZ → <strong>Down sendromu</strong> (trizomi = kromozomal anomali, Mendelian değil).</div>
+</div>
+<div class="section" id="s-cesitli">
+<h2 class="bolum">Çeşitli Farmakoloji Konuları</h2>
+
+<h3 class="alt">Serotonin (5-HT)</h3>
+<ul>
+<li>Vücuttaki %90'ı: <strong>Bağırsakta</strong> enterokromaffin hücrelerde</li>
+<li>%8-10: Trombositlerde</li>
+<li>Az miktarı: MSS (raphe nükleusları)</li>
+<li>Trombosit agregasyonunu <strong>ÖNLER</strong> (artırmaz!)</li>
+<li>Arterlerde vazokonstriksiyon yapar</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2022-23):</strong> Serotonin için yanlış → <strong>"%90'ı SSS'de sentezlenir"</strong>. Doğrusu: %90'ı bağırsakta.</div>
+
+<h3 class="alt">Anjiyotensin II Etkileri</h3>
+<ul>
+<li>Güçlü vazokonstriksiyon → kan basıncı ↑</li>
+<li>Aldosteron salgılanmasını <strong>ARTTIRIR</strong> → Na tutulumu</li>
+<li>ADH salgılanmasını artırır → su tutulumu</li>
+<li>Kardiyak hipertrofi</li>
+<li>Dipsojenik etki (su içme isteği)</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> Anjiyotensin II için yanlış → <strong>"Aldosteron salgısını azaltır"</strong>. Doğrusu: ARTTIRIR.</div>
+
+<h3 class="alt">Kolinerjik Sistem</h3>
+<table>
+<tr><th>İlaç</th><th>Etki</th><th>Kullanım</th></tr>
+<tr><td>Pilokarpin (M agonist)</td><td>Göz içi basınç ↓</td><td>Glokom</td></tr>
+<tr><td>Betanekol (M agonist)</td><td>Düz kas kasılması</td><td>Üriner retansiyon, paralitik ileus</td></tr>
+<tr><td>Atropin (M antagonist)</td><td>Kalp hızı ↑, sekresyon ↓, bronkodilatasyon</td><td>Bradikardi, organofosfat zehirlenmesi</td></tr>
+<tr><td>İpratropium (M antagonist)</td><td>Bronkodilatasyon</td><td>KOAH (inhale)</td></tr>
+</table>
+
+<h3 class="alt">Prostaglandinler</h3>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2023-24):</strong> Siklooksijenaz ürünü → <strong>Prostaglandinler</strong>. Araşidonik asit → COX → Prostaglandinler + Tromboksanlar + Prostasiklin. LOX → Lökotrienler.</div>
+</div>
+  </div>
+</div>
+<script>
+function goster(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.getElementById('m-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+goster('fdin');
+// Hash navigasyonu
+if(location.hash){try{goster(location.hash.slice(1))}catch(e){}}
+</script>
+</body>
+</html>

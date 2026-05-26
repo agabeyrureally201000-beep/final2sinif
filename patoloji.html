@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Patoloji — Ders Notları</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--card:#1a1d27;--card2:#20243a;--border:#2a2d3a;--text:#e8eaf0;--muted:#8b8fa8;--accent:#4f8ef7;--green:#1D9E75;--orange:#EF9F27;--red:#e74c3c}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+nav{display:flex;gap:8px;padding:.875rem 1.25rem;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap}
+nav h1{font-size:.95rem;font-weight:700;margin-right:auto}
+nav a{color:var(--muted);text-decoration:none;font-size:.82rem;padding:5px 10px;border-radius:7px;transition:.15s}
+nav a:hover,nav a.active{color:var(--text);background:var(--card2)}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 48px)}
+.sidebar{border-right:1px solid var(--border);padding:1.25rem;position:sticky;top:0;height:calc(100vh - 48px);overflow-y:auto}
+.sidebar h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.75rem;font-weight:600}
+.menu-item{display:block;padding:8px 12px;border-radius:9px;font-size:.83rem;color:var(--muted);text-decoration:none;margin-bottom:2px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:.15s}
+.menu-item:hover,.menu-item.active{background:var(--card2);color:var(--text)}
+.menu-item.active{color:var(--accent);font-weight:500}
+.content{padding:2rem 2.5rem;max-width:740px}
+.section{display:none}
+.section.active{display:block}
+h1.ders-baslik{font-size:1.6rem;font-weight:700;margin-bottom:.4rem}
+.ders-meta{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+h2.bolum{font-size:1.15rem;font-weight:700;color:var(--text);margin:2rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+h3.alt{font-size:1rem;font-weight:600;color:var(--accent);margin:1.5rem 0 .6rem}
+p{font-size:.9rem;line-height:1.75;color:#c8cad8;margin-bottom:.75rem}
+ul,ol{padding-left:1.4rem;margin-bottom:.75rem}
+li{font-size:.9rem;line-height:1.7;color:#c8cad8;margin-bottom:.15rem}
+li strong{color:var(--text)}
+.sinav-kutu{background:rgba(239,159,39,.08);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#f0d090}
+.sinav-kutu strong{color:var(--orange);font-weight:600}
+.onemli{background:rgba(29,158,117,.08);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#a8f0d8}
+.onemli strong{color:var(--green)}
+.uyari{background:rgba(231,76,60,.08);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:12px 16px;margin:1rem 0;font-size:.85rem;line-height:1.7;color:#f5a49a}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.83rem}
+th{background:var(--card2);padding:8px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--border);color:var(--text)}
+td{padding:7px 12px;border-bottom:1px solid var(--border);color:#c8cad8;vertical-align:top;line-height:1.5}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.tag{display:inline-block;font-size:.68rem;padding:2px 8px;border-radius:20px;font-weight:600;margin-right:4px}
+@media(max-width:640px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:.75rem 1rem}
+  .sidebar h2{display:none}
+  .menu-wrap{display:flex;gap:4px;flex-wrap:wrap}
+  .menu-item{width:auto;display:inline-block}
+  .content{padding:1.25rem}
+}
+</style>
+
+</head>
+<body>
+<nav>
+  <h1>📚 ÇÜTF Dönem 2</h1>
+  <a href="index.html">Ana Sayfa</a>
+  <a href="dersler.html">Ders Notları</a>
+  <a href="cikmistar.html">Çıkmış Sorular</a>
+</nav>
+<div class="layout">
+  <div class="sidebar">
+    <h2>🔬 Patoloji</h2>
+    <div class="menu-wrap">
+<button class="menu-item" id="m-hucre" onclick="goster('hucre')">🔬 Hücre</button>
+<button class="menu-item" id="m-apoptoz" onclick="goster('apoptoz')">💀 Apoptoz</button>
+<button class="menu-item" id="m-inflam" onclick="goster('inflam')">🔥 İnflamasyon</button>
+<button class="menu-item" id="m-tromboz" onclick="goster('tromboz')">🩸 Tromboz</button>
+<button class="menu-item" id="m-immun" onclick="goster('immun')">🛡️ İmmün</button>
+    </div>
+  </div>
+  <div class="content">
+<div class="section" id="s-hucre">
+<h1 class="ders-baslik">🔬 Patoloji</h1>
+<p class="ders-meta">5 bölüm · 2023-24 ve 2024-25 soru numaraları bile hizalı</p>
+
+<h2 class="bolum">Hücre Zedelenmesi ve Nekroz</h2>
+
+<h3 class="alt">Geri Dönüşümlü vs Geri Dönüşümsüz Zedelenme</h3>
+<table>
+<tr><th>Bulgu</th><th>Geri Dönüşümlü</th><th>Geri Dönüşümsüz</th></tr>
+<tr><td>Na-K ATPaz</td><td>Bozulur → Na içeri, hücre şişer</td><td>Tamamen çöker</td></tr>
+<tr><td>Ca2+ değişimi</td><td>Başlangıçta artar</td><td>Büyük artış → fosfolipaz, proteaz aktivasyonu</td></tr>
+<tr><td>Mitokondri</td><td>Şişme, küçük amorf yoğunlaşmalar</td><td><strong>Büyük Ca-fosfat yoğunlaşmaları</strong></td></tr>
+<tr><td>Membran</td><td>Kısmen bozulur</td><td><strong>Ağır hasar</strong> — en kritik bulgu</td></tr>
+<tr><td>Yağlı değişiklik</td><td>✅ Görülür</td><td>—</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda birebir):</strong> Geri dönüşümlü aşamada değil → <strong>Membran fonksiyonlarında ağır bozukluk</strong>. Bu geri dönüşümsüzün bulgusudur.</div>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2023-24):</strong> Hipoksik zedelenmede görülmez → <strong>Hücre DIŞI su birikimi</strong>. Su hücre içine girer, dışına değil.</div>
+
+<h3 class="alt">Nekroz Tipleri</h3>
+<table>
+<tr><th>Tip</th><th>Özellik</th><th>Görüldüğü Yer</th></tr>
+<tr><td>Koagülatif</td><td>En sık. Hücre silueti korunur, çekirdek yok</td><td>Kalp, böbrek, dalak — iskemi</td></tr>
+<tr><td>Likefaktif</td><td>Sıvılaşma, enzimler eritir</td><td>Beyin, bakteriyel apse</td></tr>
+<tr><td>Kazeöz</td><td>Peynir görünümü, granülom içinde</td><td><strong>Tüberküloz</strong></td></tr>
+<tr><td>Yağ nekrozu</td><td>Lipaz → yağ asidi + Ca → sabunlaşma</td><td>Pankreas, meme</td></tr>
+<tr><td>Fibrinoid</td><td>Damar duvarında fibrin birikimi</td><td>Vaskülit, malign HT</td></tr>
+</table>
+</div>
+<div class="section" id="s-apoptoz">
+<h2 class="bolum">Apoptoz</h2>
+
+<h3 class="alt">Apoptoz vs Nekroz</h3>
+<table>
+<tr><th>Özellik</th><th>Apoptoz</th><th>Nekroz</th></tr>
+<tr><td>Başlangıç</td><td>Programlı, kontrollü</td><td>Patolojik, kontrolsüz</td></tr>
+<tr><td>Hücre boyutu</td><td>Küçülür</td><td>Büyür (şişer)</td></tr>
+<tr><td>Membran</td><td><strong>Sağlam kalır</strong></td><td>Erken dönemde bozulur</td></tr>
+<tr><td>İnflamasyon</td><td><strong>YOK</strong> (fagositoz ile temizlenir)</td><td>VAR</td></tr>
+<tr><td>Apoptotik cisimcik</td><td><strong>OLUŞUR</strong></td><td>Oluşmaz</td></tr>
+<tr><td>Kaspaz</td><td><strong>VAR (merkezi rol)</strong></td><td>Yok</td></tr>
+<tr><td>Enerji</td><td>Gerektirir (aktif)</td><td>Gerektirmez</td></tr>
+</table>
+
+<h3 class="alt">İntrinsik (Mitokondriyal) Yol</h3>
+<p>Hücre stresi → mitokondri dış membranı geçirgen → <strong>sitokrom c</strong> sitoplazmaya → Apaf-1 ile apoptozom → <strong>kaspaz-9</strong> → kaspaz-3 → ölüm</p>
+<p><strong>BCL-2 ailesi:</strong></p>
+<ul>
+<li><strong>Pro-apoptotik:</strong> Bax, Bak — mitokondride por oluşturur → sitokrom c salar</li>
+<li><strong>Anti-apoptotik:</strong> Bcl-2, Bcl-XL — Bax/Bak'ı bloke eder → hücre yaşar</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> İntrinsik apoptoz proapoptotik molekül → <strong>Bax</strong>. Bcl-2 ve Bcl-XL ANTİapoptotik.</div>
+<div class="onemli"><strong>Foliküler lenfomada:</strong> t(14;18) → BCL-2 aşırı eksprese → apoptoz baskılanır → hücreler ölmez → lenfoma.</div>
+
+<h3 class="alt">Ekstrinsik (Ölüm Reseptörü) Yolu</h3>
+<p>FasL → Fas reseptörüne bağlanır → DISC oluşur → kaspaz-8 → kaspaz-3 → apoptoz</p>
+<p><strong>CTL'nin apoptoz tetikleme yolları:</strong></p>
+<ol>
+<li><strong>Perforin-Granzim B:</strong> Perforin membrana por açar → granzim B içeri → kaspazları aktive</li>
+<li><strong>Fas-FasL yolu:</strong> CTL'nin FasL'si hedef hücrenin Fas'ına bağlanır</li>
+</ol>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> CTL'nin apoptoz tetikleyen proteini → <strong>Perforin</strong>.</div>
+
+<h3 class="alt">p53</h3>
+<p>DNA hasarı → p53 aktive → p21 indükler → hücre döngüsü G1'de durur → onarım → başarısızsa → Bax → apoptoz</p>
+<div class="onemli">p53 mutasyonu: en sık kanser mutasyonu (%50+ solid tümör). Li-Fraumeni sendromu = germline p53 mutasyonu.</div>
+</div>
+<div class="section" id="s-inflam">
+<h2 class="bolum">İnflamasyon</h2>
+
+<h3 class="alt">Akut İnflamasyon — 5 Klasik Belirti</h3>
+<p>Rubor (kızarıklık), Kalor (ısı), Tumor (şişlik), Dolor (ağrı), Functio laesa (işlev kaybı)</p>
+
+<h3 class="alt">Lökosit Göç Sırası</h3>
+<p>Marjinasyon → <strong>Yuvarlanma (Selektin)</strong> → <strong>Sıkı adezyon (İntegrin-ICAM)</strong> → <strong>Diapedez (CD31/PECAM)</strong> → Kemotaksis → Fagositoz</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> Lökositlerin sıkı yapışmasını sağlar → <strong>İntegrin</strong>. Selektin yuvarlanma için, CD31 diapedez için.</div>
+
+<h3 class="alt">Akut İnflamasyonun Kaderler</h3>
+<p><strong>Olası kaderler:</strong> Tam iyileşme (rezolüsyon), Abse oluşumu, Fibrozis (skar), Kronik inflamasyona ilerleme</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2023-24):</strong> Akut inflamasyonun kaderi DEĞİLDİR → <strong>Granülomatöz lezyon gelişimi</strong>. Bu kronik inflamasyonun özel formudur.</div>
+
+<h3 class="alt">Granülomatöz İnflamasyon</h3>
+<p><strong>Granülom içeriği:</strong> Epiteloid hücreler (aktive makrofajlar) + Dev hücreler (Langhans tipi) + Lenfositler + Merkezde kazeöz nekroz (tüberkülozda)</p>
+
+<table>
+<tr><th>Granülom VAR</th><th>Granülom YOK</th></tr>
+<tr><td>Tüberküloz (kazeöz)</td><td><strong>Ülseratif kolit</strong></td></tr>
+<tr><td>Sarkoidoz (nonkazeöz)</td><td>Pyojenik bakteriyel inf.</td></tr>
+<tr><td>Crohn hastalığı (nonkazeöz)</td><td></td></tr>
+<tr><td>Kist Hidatik, Kedi tırmığı</td><td></td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Granülomatöz inflamasyon görülmez → <strong>Ülseratif kolit</strong>. Crohn'da VAR, ÜK'da YOK — asla karıştırma!</div>
+
+<h3 class="alt">İnflamasyon Mediatörleri</h3>
+<table>
+<tr><th>Mediatör</th><th>Kaynağı</th><th>Ana Etki</th></tr>
+<tr><td>Histamin</td><td>Mast hücresi</td><td>Vazodilatasyon, geçirgenlik ↑ (hızlı)</td></tr>
+<tr><td>Bradikinin</td><td>Plazma</td><td>Ağrı, vazodilatasyon, geçirgenlik ↑</td></tr>
+<tr><td>PGE2</td><td>COX yolu</td><td>Ağrı, ateş, vazodilatasyon</td></tr>
+<tr><td>LTB4</td><td>LOX yolu</td><td>Güçlü kemotaksis</td></tr>
+<tr><td>IL-8</td><td>Makrofaj, endotel</td><td><strong>Nötrofil kemotaksisi</strong></td></tr>
+<tr><td>TNF-α, IL-1</td><td>Makrofaj</td><td>Ateş, akut faz proteinleri</td></tr>
+</table>
+</div>
+<div class="section" id="s-tromboz">
+<h2 class="bolum">Tromboz, Emboli ve Enfarkt</h2>
+
+<h3 class="alt">Virchow Üçgeni (Tromboz Üçgeni)</h3>
+<ul>
+<li><strong>1. Endotel hasarı:</strong> Ateroskleroz, vaskülit, travma → VWF açığa çıkar → trombosit adezyonu</li>
+<li><strong>2. Staz:</strong> Atriyal fibrilasyon, uzun yatış → laminat akım bozulur</li>
+<li><strong>3. Hiperkoagülabilite:</strong> Faktör V Leiden, Protein C/S eksikliği, OKS kullanımı</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2 yılda tekrar):</strong> Trombozda rolü YOKTUR → <strong>Von Willebrand faktör eksikliği</strong>. VWF eksikliği KANAMA diatezi yapar, tromboz değil!</div>
+
+<h3 class="alt">Tromboksan A2 (TXA2)</h3>
+<ul>
+<li>Trombositlerden salgılanır</li>
+<li>Trombosit agregasyonunu <strong>ARTTIRIR</strong> → pıhtı oluşumunu destekler ✅</li>
+<li>Araşidonik asitten COX yoluyla üretilir ✅</li>
+<li>Vazokonstriksiyon yapar (dilatasyon değil!) ✅</li>
+<li>Trombositlerde sentezlenir (endotelde değil!) ✅</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> TXA2 için doğru olan 1 ve 3 → Trombosit agregasyonu artırır + COX yolu ile üretilir. Vazodilatasyon ve bronkodilatasyon yanlış.</div>
+<div class="onemli"><strong>Prostasiklin (PGI2) = TXA2'nin tam tersi:</strong> Endotel tarafından salgılanır, trombosit agregasyonunu ÖNLER, vazodilatasyon yapar.</div>
+
+<h3 class="alt">Enfarkt Tipleri</h3>
+<table>
+<tr><th>Tip</th><th>Renk</th><th>Görüldüğü Yer</th><th>Neden</th></tr>
+<tr><td>Beyaz (anemik)</td><td>Soluk</td><td>Kalp, böbrek, dalak</td><td>Arteriyel oklüzyon → iskemi</td></tr>
+<tr><td>Kırmızı (hemorajik)</td><td>Kırmızı</td><td>Akciğer, bağırsak, testis</td><td>Venöz oklüzyon veya çift kanlanmalı doku</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> Kırmızı enfarkt görülmez → <strong>Arteriyel oklüzyon sonucu</strong>. Arteriyel oklüzyon = beyaz enfarkt.</div>
+
+<h3 class="alt">Karaciğerde Prusya Mavisi (+) Pigment</h3>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2023-24):</strong> Karaciğerde Prusya mavisi ile boyanma → <strong>Hemosiderin</strong> (demir içerir). Lipofuskin Prusya mavisi negatif.</div>
+</div>
+<div class="section" id="s-immun">
+<h2 class="bolum">İmmün Yetmezlik ve Yara İyileşmesi</h2>
+
+<h3 class="alt">İmmün Yetmezlik Sendromları</h3>
+<table>
+<tr><th>Sendrom</th><th>Defekt</th><th>Özellik</th></tr>
+<tr><td><strong>Hiper IgM sendromu</strong></td><td>CD40L (CD154) mutasyonu — T hücresinde</td><td>IgM yüksek, IgG/IgA/IgE çok düşük. İzotip değişimi yok.</td></tr>
+<tr><td>X'e bağlı agammaglobulinemi (Bruton)</td><td>BTK mutasyonu</td><td>B hücresi gelişemez, tüm Ig düşük. Erkeklerde.</td></tr>
+<tr><td>Seçici IgA eksikliği</td><td>IgA üretimi yok</td><td>En sık primer immün yetmezlik</td></tr>
+<tr><td>DiGeorge sendromu</td><td>22q11 delesyonu — timus yokluğu</td><td>T hücresi yok, hipokalsemi, konotrunkal kalp defekti</td></tr>
+<tr><td>SCID</td><td>ADA eksikliği veya RAG mutasyonu</td><td>T ve B hücresi ikisi de yok</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2023-24):</strong> CD40-CD40L mutasyonu → <strong>Hiper IgM sendromu</strong>. T hücresi B'ye "izotip değiştir" sinyali veremiyor.</div>
+
+<h3 class="alt">Doğal İmmünite</h3>
+<ul>
+<li>Mikrobiyal invazyon için bir bariyerdir</li>
+<li>Enflamasyonu indükler</li>
+<li>Adaptif immün cevapları tetikler</li>
+<li>Reseptörler (TLR, NLR): enfeksiyon, allerji, otoimmünitede terapötik hedef</li>
+</ul>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2022-23):</strong> Doğal immünite için doğru → <strong>Hepsi (E seçeneği)</strong>.</div>
+
+<h3 class="alt">Yara İyileşmesini Bozan Faktörler</h3>
+<p><strong>Bozanlar:</strong> Vitamin C eksikliği, Diabetes mellitus, Enfeksiyon, Yabancı cisim, Kortikosteroid, Radyasyon, Beslenme bozukluğu, Kanser</p>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2024-25):</strong> Yara iyileşmesini etkileyen faktörlerden değildir → <strong>Hipertansiyon</strong>. HT doğrudan yara iyileşmesini bozmaz.</div>
+
+<h3 class="alt">Romatoid Artrit</h3>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2022-23):</strong> RA'da hastalık prognozu ile en iyi korelasyon → <strong>Anti-CCP antikoru</strong>. RF daha az spesifik.</div>
+
+<h3 class="alt">Kök Hücre Tipleri</h3>
+<table>
+<tr><th>Tip</th><th>Potansiyel</th><th>Örnek</th></tr>
+<tr><td>Totipotent</td><td>Her şey (plasenta dahil)</td><td>Zigot, ilk 2-4 blastomer</td></tr>
+<tr><td><strong>Pluripotent</strong></td><td>Ektoderm/mezoderm/endoderm, plasenta hariç</td><td><strong>Blastosit iç hücre kütlesi</strong></td></tr>
+<tr><td>Multipotent</td><td>Birden fazla hücre tipi</td><td>Hematopoetik kök hücre</td></tr>
+<tr><td>Unipotent</td><td>Sadece bir hücre tipi</td><td>Keratinosit kök hücresi</td></tr>
+</table>
+<div class="sinav-kutu"><strong>⚠️ SINAV (2022-23):</strong> Blastositler hangi kök hücre grubunda → <strong>Pluripotent</strong>.</div>
+</div>
+  </div>
+</div>
+<script>
+function goster(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.getElementById('m-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+goster('hucre');
+// Hash navigasyonu
+if(location.hash){try{goster(location.hash.slice(1))}catch(e){}}
+</script>
+</body>
+</html>
